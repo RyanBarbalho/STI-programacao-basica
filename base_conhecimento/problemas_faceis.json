@@ -1,0 +1,67 @@
+[
+    {
+      "id": "problema_001",
+      "nivel_dificuldade": "fácil",
+      "conceito": "estrutura de repetição",
+      "enunciado": "Escreva um programa em C que imprima os números de 1 até n (n é um número inteiro lido pelo usuário).",
+      "casos_de_teste": [
+        {
+          "entrada": "10\n",
+          "saida_esperada": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n"
+        },
+        {
+          "entrada": "5\n",
+          "saida_esperada": "1\n2\n3\n4\n5\n"
+        }
+      ],
+      "restricoes": ["usar for", "não usar funções adicionais"],
+      "dicas": [
+        "Use a estrutura de repetição 'for'.",
+        "Lembre-se de iniciar a variável em 1 e repetir até 10."
+      ]
+    },
+    {
+      "id": "problema_002",
+      "nivel_dificuldade": "fácil",
+      "conceito": "estrutura condicional",
+      "enunciado": "Escreva um programa em C que leia um número inteiro e informe se ele é par ou ímpar.",
+      "casos_de_teste": [
+        {
+          "entrada": "4\n",
+          "saida_esperada": "Par\n"
+        },
+        {
+          "entrada": "7\n",
+          "saida_esperada": "Ímpar\n"
+        }
+      ],
+      "restricoes": ["usar if-else", "não usar operadores bit a bit"],
+      "dicas": [
+        "Use o operador módulo (%) para verificar o resto da divisão por 2.",
+        "Se o resto for 0, o número é par; caso contrário, é ímpar."
+      ]
+    },
+    {
+      "id": "problema_003",
+      "nivel_dificuldade": "fácil",
+      "conceito": "entrada, aritmética básica",
+      "enunciado": "Escreva um programa em C que leia três notas (valores float) e imprima a média aritmética com duas casas decimais.",
+      "casos_de_teste": [
+        {
+          "entrada": "7.0\n8.0\n9.0\n",
+          "saida_esperada": "Média: 8.00\n"
+        },
+        {
+          "entrada": "5.5\n6.5\n7.0\n",
+          "saida_esperada": "Média: 6.33\n"
+        }
+      ],
+      "restricoes": ["usar printf com formatação %.2f", "não usar arrays"],
+      "dicas": [
+        "Use três variáveis do tipo float para armazenar as notas.",
+        "Calcule a média com a fórmula (n1 + n2 + n3) / 3.",
+        "Use 'printf(\"Média: %.2f\\n\", media);' para imprimir com duas casas decimais."
+      ]
+    }
+  ]
+  

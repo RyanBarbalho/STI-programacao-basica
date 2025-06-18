@@ -1,0 +1,62 @@
+[
+    {
+      "id": "problema_004",
+      "nivel_dificuldade": "médio",
+      "conceito": "laço e condição",
+      "enunciado": "Escreva um programa em C que imprima todos os múltiplos de 5 entre 1 e 100.",
+      "casos_de_teste": [
+        {
+          "entrada": "",
+          "saida_esperada": "5\n10\n15\n20\n25\n30\n35\n40\n45\n50\n55\n60\n65\n70\n75\n80\n85\n90\n95\n100\n"
+        }
+      ],
+      "restricoes": ["usar for ou while", "usar if para verificar múltiplos"],
+      "dicas": [
+        "Itere de 1 a 100 usando um laço.",
+        "Use a condição 'if (i % 5 == 0)' para identificar múltiplos de 5."
+      ]
+    },
+    {
+      "id": "problema_005",
+      "nivel_dificuldade": "médio",
+      "conceito": "números primos, laços aninhados",
+      "enunciado": "Escreva um programa em C que leia um número inteiro e diga se ele é primo.",
+      "casos_de_teste": [
+        {
+          "entrada": "7\n",
+          "saida_esperada": "Primo\n"
+        },
+        {
+          "entrada": "10\n",
+          "saida_esperada": "Não primo\n"
+        }
+      ],
+      "restricoes": ["usar laços for", "não usar funções prontas"],
+      "dicas": [
+        "Um número primo é divisível apenas por 1 e por ele mesmo.",
+        "Use um laço para contar divisores do número."
+      ]
+    },
+    {
+      "id": "problema_006",
+      "nivel_dificuldade": "médio",
+      "conceito": "vetores e controle de fluxo",
+      "enunciado": "Escreva um programa em C que leia 10 números inteiros e imprima o maior entre eles.",
+      "casos_de_teste": [
+        {
+          "entrada": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n",
+          "saida_esperada": "Maior: 10\n"
+        },
+        {
+          "entrada": "34\n12\n56\n78\n12\n34\n56\n89\n32\n11\n",
+          "saida_esperada": "Maior: 89\n"
+        }
+      ],
+      "restricoes": ["usar vetores", "usar laço for"],
+      "dicas": [
+        "Armazene os números em um vetor.",
+        "Percorra o vetor comparando cada valor com o maior atual."
+      ]
+    }
+  ]
+  
