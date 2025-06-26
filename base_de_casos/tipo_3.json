@@ -1,0 +1,124 @@
+[
+  {
+    "id": "T3_PROB_001",
+    "tipo_problema": 3,
+    "nivel_dificuldade": "basico-intermediario",
+    "conceito_principal": "Uso do 'if' simples",
+    "conceitos_secundarios": ["operadores relacionais >=", "scanf"],
+    "enunciado": "Crie um programa que leia a idade de uma pessoa e, caso ela seja maior ou igual a 18 anos, exiba a mensagem 'Voce e maior de idade.'. Se a idade for menor, o programa não deve exibir nenhuma mensagem.",
+    "casos_de_teste": [
+      {
+        "entrada": "25\n",
+        "saida_esperada": "Voce e maior de idade.\n"
+      },
+      {
+        "entrada": "18\n",
+        "saida_esperada": "Voce e maior de idade.\n"
+      },
+      {
+        "entrada": "17\n",
+        "saida_esperada": ""
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int idade;\n    printf(\"Digite sua idade: \");\n    scanf(\"%d\", &idade);\n    if (idade >= 18) {\n        printf(\"Voce e maior de idade.\\n\");\n    }\n    return 0;\n}",
+    "restricoes": [],
+    "dicas": [
+      "A estrutura 'if' serve para executar um bloco de código SOMENTE SE uma condição for verdadeira.",
+      "A condição a ser testada deve ser colocada entre parênteses ().",
+      "O operador para 'maior ou igual' em C é '>='."
+    ]
+  },
+  {
+    "id": "T3_PROB_002",
+    "tipo_problema": 3,
+    "nivel_dificuldade": "basico-intermediario",
+    "conceito_principal": "Verificação Par ou Ímpar com 'if-else'",
+    "conceitos_secundarios": ["operador modulo %", "operador relacional ==", "else"],
+    "enunciado": "Desenvolva um programa que leia um número inteiro e diga se ele é PAR ou ÍMPAR.",
+    "casos_de_teste": [
+      {
+        "entrada": "10\n",
+        "saida_esperada": "O numero 10 e PAR.\n"
+      },
+      {
+        "entrada": "7\n",
+        "saida_esperada": "O numero 7 e IMPAR.\n"
+      },
+      {
+        "entrada": "0\n",
+        "saida_esperada": "O numero 0 e PAR.\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int numero;\n    printf(\"Digite um numero inteiro: \");\n    scanf(\"%d\", &numero);\n    if (numero % 2 == 0) {\n        printf(\"O numero %d e PAR.\\n\", numero);\n    } else {\n        printf(\"O numero %d e IMPAR.\\n\", numero);\n    }\n    return 0;\n}",
+    "restricoes": [],
+    "dicas": [
+      "Um número é par se o resto da sua divisão por 2 for igual a 0.",
+      "Lembre-se que o operador '%' calcula o resto de uma divisão.",
+      "Para comparar se dois valores são iguais, use '=='.",
+      "A estrutura 'if-else' é perfeita para situações com dois caminhos: um se a condição for verdadeira, e outro ('else') se for falsa."
+    ]
+  },
+  {
+    "id": "T3_PROB_003",
+    "tipo_problema": 3,
+    "nivel_dificuldade": "basico-intermediario",
+    "conceito_principal": "Múltiplas condições com 'if-else if-else'",
+    "conceitos_secundarios": ["operadores relacionais", "else if"],
+    "enunciado": "A nota final de um aluno é calculada a partir de três notas atribuídas, respectivamente, a um trabalho de laboratório, a uma avaliação semestral e a um exame final. A média das três notas determina o conceito do aluno, conforme a tabela: Média (8 a 10) -> Conceito A; Média (7 a 8) -> Conceito B; Média (6 a 7) -> Conceito C; Média (5 a 6) -> Conceito D; Média (0 a 5) -> Conceito E. Faça um programa que receba as três notas, calcule a média e exiba o conceito do aluno.",
+    "casos_de_teste": [
+      {
+        "entrada": "8.5\n9.0\n10.0\n",
+        "saida_esperada": "Media: 9.17 - Conceito A\n"
+      },
+      {
+        "entrada": "7.0\n7.5\n8.0\n",
+        "saida_esperada": "Media: 7.50 - Conceito B\n"
+      },
+      {
+        "entrada": "4.0\n5.0\n5.5\n",
+        "saida_esperada": "Media: 4.83 - Conceito E\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    float n1, n2, n3, media;\n    printf(\"Digite as tres notas: \");\n    scanf(\"%f %f %f\", &n1, &n2, &n3);\n    media = (n1 + n2 + n3) / 3.0;\n    printf(\"Media: %.2f - \", media);\n    if (media >= 8.0) {\n        printf(\"Conceito A\\n\");\n    } else if (media >= 7.0) {\n        printf(\"Conceito B\\n\");\n    } else if (media >= 6.0) {\n        printf(\"Conceito C\\n\");\n    } else if (media >= 5.0) {\n        printf(\"Conceito D\\n\");\n    } else {\n        printf(\"Conceito E\\n\");\n    }\n    return 0;\n}",
+    "restricoes": ["As notas são números de 0 a 10 e podem ter casas decimais."],
+    "dicas": [
+      "Primeiro, calcule a média aritmética das três notas.",
+      "Para uma sequência de verificações exclusivas, use a estrutura 'if', seguida de 'else if' para as condições intermediárias e 'else' para a condição final.",
+      "A ordem das verificações é importante! Comece da maior média para a menor.",
+      "Note que o intervalo 'entre 7 e 8' já é tratado pela lógica. Se o programa chega no `else if (media >= 7.0)`, ele já sabe que a média NÃO é maior ou igual a 8."
+    ]
+  },
+  {
+    "id": "T3_PROB_004",
+    "tipo_problema": 3,
+    "nivel_dificuldade": "basico-intermediario",
+    "conceito_principal": "Uso do operador lógico E (&&)",
+    "conceitos_secundarios": ["operadores logicos", "if"],
+    "enunciado": "Faça um programa que leia um número inteiro e verifique se ele está no intervalo entre 20 e 50, inclusive. Se estiver, imprima 'O numero esta no intervalo.'. Caso contrário, não imprima nada.",
+    "casos_de_teste": [
+      {
+        "entrada": "35\n",
+        "saida_esperada": "O numero esta no intervalo.\n"
+      },
+      {
+        "entrada": "20\n",
+        "saida_esperada": "O numero esta no intervalo.\n"
+      },
+      {
+        "entrada": "19\n",
+        "saida_esperada": ""
+      },
+      {
+        "entrada": "51\n",
+        "saida_esperada": ""
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int numero;\n    printf(\"Digite um numero: \");\n    scanf(\"%d\", &numero);\n    if (numero >= 20 && numero <= 50) {\n        printf(\"O numero esta no intervalo.\\n\");\n    }\n    return 0;\n}",
+    "restricoes": [],
+    "dicas": [
+      "Para que um número esteja em um intervalo, ele precisa satisfazer duas condições ao mesmo tempo: ser maior ou igual ao limite inferior E ser menor ou igual ao limite superior.",
+      "O operador lógico 'E' em C é representado por '&&'.",
+      "A condição `(condicao1 && condicao2)` só será verdadeira se `condicao1` e `condicao2` forem, ambas, verdadeiras."
+    ]
+  }
+]
