@@ -1,0 +1,112 @@
+[
+  {
+    "id": "T2_PROB_001",
+    "tipo_problema": 2,
+    "nivel_dificuldade": "basico",
+    "conceito_principal": "Entrada de dados com scanf",
+    "conceitos_secundarios": ["declaracao de variaveis", "scanf", "operador de endereco &"],
+    "enunciado": "Escreva um programa em C que leia um número inteiro digitado pelo usuário e o imprima na tela.",
+    "casos_de_teste": [
+      {
+        "entrada": "42\n",
+        "saida_esperada": "O numero digitado foi: 42\n"
+      },
+      {
+        "entrada": "-150\n",
+        "saida_esperada": "O numero digitado foi: -150\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int numero;\n    printf(\"Digite um numero inteiro: \");\n    scanf(\"%d\", &numero);\n    printf(\"O numero digitado foi: %d\\n\", numero);\n    return 0;\n}",
+    "restricoes": ["O programa deve ler apenas um número inteiro."],
+    "dicas": [
+      "Use a função 'scanf()' para ler dados digitados no teclado.",
+      "Para ler um número inteiro, o especificador de formato no 'scanf' é '%d'.",
+      "É muito importante usar o caractere '&' antes do nome da variável no 'scanf()'. Ele indica o endereço da memória onde o valor deve ser guardado."
+    ]
+  },
+  {
+    "id": "T2_PROB_002",
+    "tipo_problema": 2,
+    "nivel_dificuldade": "basico",
+    "conceito_principal": "Soma de dois números",
+    "conceitos_secundarios": ["scanf", "operador de soma +", "multiplas variaveis"],
+    "enunciado": "Crie um programa que leia dois números inteiros, calcule a soma deles e exiba o resultado no formato 'A soma de X e Y e: Z'.",
+    "casos_de_teste": [
+      {
+        "entrada": "5\n7\n",
+        "saida_esperada": "A soma de 5 e 7 e: 12\n"
+      },
+      {
+        "entrada": "100\n-30\n",
+        "saida_esperada": "A soma de 100 e -30 e: 70\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int num1, num2, soma;\n    printf(\"Digite o primeiro numero: \");\n    scanf(\"%d\", &num1);\n    printf(\"Digite o segundo numero: \");\n    scanf(\"%d\", &num2);\n    soma = num1 + num2;\n    printf(\"A soma de %d e %d e: %d\\n\", num1, num2, soma);\n    return 0;\n}",
+    "restricoes": ["Utilize uma variável separada para armazenar o resultado da soma."],
+    "dicas": [
+      "Você precisará de três variáveis: duas para guardar os números de entrada e uma para o resultado.",
+      "O símbolo para a operação de soma em C é '+'.",
+      "Você pode ler os dois números com duas chamadas separadas de 'scanf()' ou com uma única: scanf(\"%d %d\", &num1, &num2);"
+    ]
+  },
+  {
+    "id": "T2_PROB_003",
+    "tipo_problema": 2,
+    "nivel_dificuldade": "basico",
+    "conceito_principal": "Cálculo de média com tipo float",
+    "conceitos_secundarios": ["operador de divisao /", "tipo float", "conversao de tipo (casting)"],
+    "enunciado": "Faça um programa que leia duas notas de um aluno (números que podem ter casas decimais), calcule e mostre a sua média. A saída deve ter duas casas decimais.",
+    "casos_de_teste": [
+      {
+        "entrada": "7.5\n8.5\n",
+        "saida_esperada": "A media e: 8.00\n"
+      },
+      {
+        "entrada": "10.0\n6.0\n",
+        "saida_esperada": "A media e: 8.00\n"
+      },
+      {
+        "entrada": "5.5\n7.2\n",
+        "saida_esperada": "A media e: 6.35\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    float nota1, nota2, media;\n    printf(\"Digite a primeira nota: \");\n    scanf(\"%f\", &nota1);\n    printf(\"Digite a segunda nota: \");\n    scanf(\"%f\", &nota2);\n    media = (nota1 + nota2) / 2.0;\n    printf(\"A media e: %.2f\\n\", media);\n    return 0;\n}",
+    "restricoes": ["As notas podem ser números não inteiros.", "A média deve ser exibida com exatamente duas casas decimais."],
+    "dicas": [
+      "Use o tipo 'float' para as variáveis, pois as notas e a média podem ter casas decimais.",
+      "O especificador de formato para ler e escrever um 'float' é '%f'.",
+      "Para calcular a média, some as duas notas e divida o resultado por 2.",
+      "Lembre-se que 'printf(\"%.2f\", ...)' formata a saída para duas casas decimais."
+    ]
+  },
+  {
+    "id": "T2_PROB_004",
+    "tipo_problema": 2,
+    "nivel_dificuldade": "basico",
+    "conceito_principal": "Uso do operador módulo (%)",
+    "conceitos_secundarios": ["operador de divisao /", "operador modulo %", "divisao inteira"],
+    "enunciado": "Escreva um programa que leia um número total de segundos e o converta para horas, minutos e segundos. Exemplo: 3661 segundos equivalem a 1 hora, 1 minuto e 1 segundo.",
+    "casos_de_teste": [
+      {
+        "entrada": "3661\n",
+        "saida_esperada": "Equivale a: 1 hora(s), 1 minuto(s) e 1 segundo(s)\n"
+      },
+      {
+        "entrada": "86399\n",
+        "saida_esperada": "Equivale a: 23 hora(s), 59 minuto(s) e 59 segundo(s)\n"
+      },
+      {
+        "entrada": "120\n",
+        "saida_esperada": "Equivale a: 0 hora(s), 2 minuto(s) e 0 segundo(s)\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int total_segundos, horas, minutos, segundos;\n    printf(\"Digite o total de segundos: \");\n    scanf(\"%d\", &total_segundos);\n    horas = total_segundos / 3600;\n    minutos = (total_segundos % 3600) / 60;\n    segundos = total_segundos % 60;\n    printf(\"Equivale a: %d hora(s), %d minuto(s) e %d segundo(s)\\n\", horas, minutos, segundos);\n    return 0;\n}",
+    "restricoes": ["A entrada será um número inteiro não negativo."],
+    "dicas": [
+      "Uma hora tem 3600 segundos. A divisão inteira do total de segundos por 3600 lhe dará o número de horas.",
+      "O operador módulo '%' é perfeito para encontrar o que 'sobra' de uma divisão.",
+      "Para encontrar os minutos, pegue o que sobrou da divisão por horas e divida por 60.",
+      "Para encontrar os segundos, pegue o resto da divisão do total de segundos por 60."
+    ]
+  }
+]

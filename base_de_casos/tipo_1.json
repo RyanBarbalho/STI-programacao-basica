@@ -1,0 +1,66 @@
+[
+  {
+    "id": "T1_PROB_001",
+    "tipo_problema": 1,
+    "nivel_dificuldade": "introdutorio",
+    "conceito_principal": "Saída de texto simples",
+    "conceitos_secundarios": ["printf", "biblioteca stdio.h", "função main"],
+    "enunciado": "Escreva um programa em C que imprima exatamente a frase 'Ola, Mundo!' na tela, seguida por uma quebra de linha.",
+    "casos_de_teste": [
+      {
+        "entrada": null,
+        "saida_esperada": "Ola, Mundo!\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    printf(\"Ola, Mundo!\\n\");\n    return 0;\n}",
+    "restricoes": ["Não utilizar variáveis."],
+    "dicas": [
+      "Todo programa em C precisa de uma função principal chamada 'main'.",
+      "Para imprimir texto na tela, você precisa incluir a biblioteca 'stdio.h'.",
+      "Use a função 'printf()' para mostrar mensagens.",
+      "O caractere especial '\\n' é usado para pular uma linha."
+    ]
+  },
+  {
+    "id": "T1_PROB_002",
+    "tipo_problema": 1,
+    "nivel_dificuldade": "introdutorio",
+    "conceito_principal": "Declaração e inicialização de variáveis inteiras",
+    "conceitos_secundarios": ["tipo int", "printf com especificador de formato", "atribuição"],
+    "enunciado": "Declare uma variável inteira chamada 'idade', atribua o valor 25 a ela e imprima a frase 'Minha idade e: 25' na tela, utilizando o valor da variável.",
+    "casos_de_teste": [
+      {
+        "entrada": null,
+        "saida_esperada": "Minha idade e: 25\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int idade = 25;\n    printf(\"Minha idade e: %d\\n\", idade);\n    return 0;\n}",
+    "restricoes": [],
+    "dicas": [
+      "Para criar uma variável para números inteiros, use o tipo 'int'. Ex: int numero;",
+      "O sinal '=' é usado para atribuir um valor a uma variável.",
+      "Para imprimir o valor de uma variável inteira dentro do 'printf', use o especificador de formato '%d'."
+    ]
+  },
+  {
+    "id": "T1_PROB_003",
+    "tipo_problema": 1,
+    "nivel_dificuldade": "introdutorio",
+    "conceito_principal": "Declaração e inicialização de variáveis de ponto flutuante",
+    "conceitos_secundarios": ["tipo float", "printf com especificador de formato"],
+    "enunciado": "Declare uma variável de ponto flutuante chamada 'altura', atribua o valor 1.75 a ela e imprima na tela a frase 'Sua altura e: 1.75 metros.', utilizando o valor da variável.",
+    "casos_de_teste": [
+      {
+        "entrada": null,
+        "saida_esperada": "Sua altura e: 1.75 metros.\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    float altura = 1.75;\n    printf(\"Sua altura e: %.2f metros.\\n\", altura);\n    return 0;\n}",
+    "restricoes": [],
+    "dicas": [
+      "Para variáveis com casas decimais, como alturas ou preços, use o tipo 'float'.",
+      "O especificador de formato para 'float' no 'printf' é '%f'.",
+      "Você pode controlar o número de casas decimais a serem exibidas. Por exemplo, '%.2f' exibe exatamente duas casas decimais."
+    ]
+  }
+]
