@@ -1,0 +1,104 @@
+[
+    {
+      "id": "T7_PROB_001",
+      "tipo_problema": 7,
+      "nivel_dificuldade": "intermediario-avancado",
+      "conceito_principal": "Função 'void' sem parâmetros",
+      "conceitos_secundarios": ["declaracao de funcao", "definicao de funcao", "chamada de funcao", "void"],
+      "enunciado": "Crie um programa que exiba um menu de opções. A exibição do menu deve ser feita por uma função separada chamada 'exibirMenu'. Esta função não recebe nenhum parâmetro e não retorna nenhum valor.",
+      "casos_de_teste": [
+        {
+          "entrada": null,
+          "saida_esperada": "--- Sistema de Calculos ---\n1. Somar\n2. Subtrair\n3. Sair\n---------------------------\n"
+        }
+      ],
+      "solucao": "#include <stdio.h>\n\n// Prototipo da funcao\nvoid exibirMenu();\n\nint main() {\n    exibirMenu(); // Chamada da funcao\n    return 0;\n}\n\n// Definicao da funcao\nvoid exibirMenu() {\n    printf(\"--- Sistema de Calculos ---\\n\");\n    printf(\"1. Somar\\n\");\n    printf(\"2. Subtrair\\n\");\n    printf(\"3. Sair\\n\");\n    printf(\"---------------------------\\n\");\n}",
+      "restricoes": ["É obrigatório criar e chamar a função 'exibirMenu' a partir da 'main'."],
+      "dicas": [
+        "Uma função que não retorna valor tem o tipo 'void'.",
+        "Uma função que não recebe valores tem os parênteses vazios: 'exibirMenu()'.",
+        "É uma boa prática declarar o protótipo da função no início do arquivo, antes da 'main'.",
+        "O código que a função executa fica na sua definição, que pode ser escrita após a 'main'."
+      ]
+    },
+    {
+      "id": "T7_PROB_002",
+      "tipo_problema": 7,
+      "nivel_dificuldade": "intermediario-avancado",
+      "conceito_principal": "Função 'void' com parâmetros",
+      "conceitos_secundarios": ["passagem de parametros", "modularizacao"],
+      "enunciado": "Refatore o problema de verificar se um número é PAR ou ÍMPAR. Crie uma função chamada 'verificarParidade' que recebe um número inteiro como parâmetro e imprime na tela se ele é PAR ou ÍMPAR. A função 'main' deve ler o número e passá-lo para a função 'verificarParidade'.",
+      "casos_de_teste": [
+        {
+          "entrada": "10\n",
+          "saida_esperada": "O numero 10 e PAR.\n"
+        },
+        {
+          "entrada": "7\n",
+          "saida_esperada": "O numero 7 e IMPAR.\n"
+        }
+      ],
+      "solucao": "#include <stdio.h>\n\nvoid verificarParidade(int num);\n\nint main() {\n    int numero;\n    printf(\"Digite um numero: \");\n    scanf(\"%d\", &numero);\n    verificarParidade(numero);\n    return 0;\n}\n\nvoid verificarParidade(int num) {\n    if (num % 2 == 0) {\n        printf(\"O numero %d e PAR.\\n\", num);\n    } else {\n        printf(\"O numero %d e IMPAR.\\n\", num);\n    }\n}",
+      "restricoes": ["A lógica de verificação (if/else) deve estar inteiramente dentro da função 'verificarParidade'."],
+      "dicas": [
+        "A função receberá um valor, então ela precisa de um parâmetro. Ex: 'void minhaFuncao(int parametro)'.",
+        "Na 'main', ao chamar a função, você passa a variável como argumento: 'verificarParidade(numero);'.",
+        "Dentro da função, você usará o nome do parâmetro ('num') para se referir ao valor que foi passado."
+      ]
+    },
+    {
+      "id": "T7_PROB_003",
+      "tipo_problema": 7,
+      "nivel_dificuldade": "intermediario-avancado",
+      "conceito_principal": "Função com retorno de valor",
+      "conceitos_secundarios": ["return", "tipo de retorno", "parametros"],
+      "enunciado": "Crie uma função chamada 'somar' que recebe dois números inteiros como parâmetros e RETORNA o resultado da soma. A função 'main' deve ler os dois números, chamar a função 'somar' e imprimir o resultado retornado.",
+      "casos_de_teste": [
+        {
+          "entrada": "15\n20\n",
+          "saida_esperada": "A soma e: 35\n"
+        },
+        {
+          "entrada": "-10\n5\n",
+          "saida_esperada": "A soma e: -5\n"
+        }
+      ],
+      "solucao": "#include <stdio.h>\n\nint somar(int a, int b);\n\nint main() {\n    int n1, n2, resultado;\n    printf(\"Digite dois numeros: \");\n    scanf(\"%d %d\", &n1, &n2);\n    resultado = somar(n1, n2);\n    printf(\"A soma e: %d\\n\", resultado);\n    return 0;\n}\n\nint somar(int a, int b) {\n    return a + b; // Retorna o resultado da expressao\n}",
+      "restricoes": ["A função 'somar' não deve usar 'printf'. A impressão do resultado deve ser feita na 'main'."],
+      "dicas": [
+        "Se a função retorna um inteiro, seu tipo deve ser 'int'. Ex: 'int somar(...)'.",
+        "A palavra-chave 'return' é usada para devolver um valor para quem chamou a função.",
+        "Na 'main', você precisa de uma variável para 'capturar' o valor retornado pela função. Ex: 'resultado = somar(n1, n2);'."
+      ]
+    },
+    {
+      "id": "T7_PROB_004",
+      "tipo_problema": 7,
+      "nivel_dificuldade": "intermediario-avancado",
+      "conceito_principal": "Função para encapsular cálculo",
+      "conceitos_secundarios": ["return", "tipo float"],
+      "enunciado": "Crie uma função chamada 'calcularFatorial' que recebe um inteiro não-negativo 'n' e retorna o seu fatorial. A função 'main' deve ler um número, passar para a função e imprimir o fatorial retornado.",
+      "casos_de_teste": [
+          {
+              "entrada": "5\n",
+              "saida_esperada": "O fatorial de 5 e: 120\n"
+          },
+          {
+              "entrada": "0\n",
+              "saida_esperada": "O fatorial de 0 e: 1\n"
+          },
+          {
+              "entrada": "1\n",
+              "saida_esperada": "O fatorial de 1 e: 1\n"
+          }
+      ],
+      "solucao": "#include <stdio.h>\n\nlong long int calcularFatorial(int n);\n\nint main() {\n    int numero;\n    long long int resultado;\n    printf(\"Digite um numero: \");\n    scanf(\"%d\", &numero);\n    if (numero < 0) {\n        printf(\"Nao existe fatorial de numero negativo.\\n\");\n    } else {\n        resultado = calcularFatorial(numero);\n        printf(\"O fatorial de %d e: %lld\\n\", numero, resultado);\n    }\n    return 0;\n}\n\nlong long int calcularFatorial(int n) {\n    long long int fat = 1;\n    int i;\n    for (i = 1; i <= n; i++) {\n        fat = fat * i;\n    }\n    return fat;\n}",
+      "restricoes": ["O cálculo do fatorial deve ser feito inteiramente dentro da função."],
+      "dicas": [
+          "O fatorial de 0 é 1. Trate este caso.",
+          "O fatorial de N é a multiplicação de todos os números de 1 até N.",
+          "Use um laço 'for' dentro da função para realizar a multiplicação sucessiva.",
+          "O fatorial cresce muito rápido! Use um tipo de retorno que suporte números grandes, como 'long long int', e o especificador '%lld' para imprimi-lo."
+      ]
+    }
+  ]
