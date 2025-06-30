@@ -32,7 +32,7 @@ def classificar_enunciado(enunciado, modelo):
     score_total = sum(scores.values())
 
     if score_total == 0:
-        return {"tipo": "Indefinido", "confianca": 0, "detalhes": scores}
+        return {"tipo_principal": "Indefinido", "confianca": 0, "detalhes": scores, "status": "Indefinido"}
 
     # Encontra o melhor tipo e o segundo melhor
     tipos_ordenados = sorted(scores.items(), key=lambda item: item[1], reverse=True)
@@ -63,15 +63,29 @@ def classificar_enunciado(enunciado, modelo):
 
 
 # --- EXEMPLO DE USO ---
-novo_problema = "crie uma funcao para calcular a media de um vetor de N numeros. a funcao deve ler os valores e retornar o resultado"
+exemplos_teste = [
+    "crie uma funcao para calcular a media de um vetor de N numeros. a funcao deve ler os valores e retornar o resultado",
+    "escreva um programa que imprima 'ola mundo' na tela",
+    "leia dois numeros e calcule a soma deles",
+    "verifique se um numero e par ou impar",
+    "calcule o fatorial de um numero usando um laco",
+    "armazene N numeros em um vetor e ordene em ordem crescente",
+    "crie uma matriz 3x3 e calcule a diagonal principal",
+    "sem usar funcao, calcule a area de um triangulo"
+]
 
-classificacao = classificar_enunciado(novo_problema, MODELO_ESPECIALISTA)
+print("=== TESTE DO CLASSIFICADOR===\n")
 
-print(f"Análise do Problema: '{novo_problema}'")
-print("-" * 30)
-print(f"Scores Brutos: {classificacao['detalhes']}")
-print(f"Status da Classificação: {classificacao['status']}")
-print(f"Tipo Principal Identificado: Tipo {classificacao['tipo_principal']} ({classificacao['confianca']}% de confiança)")
+for i, problema in enumerate(exemplos_teste, 1):
+    classificacao = classificar_enunciado(problema, MODELO_ESPECIALISTA)
 
-if classificacao.get('status') == 'Ambiguo':
-    print(f"Possível tipo secundário: Tipo {classificacao['tipo_secundario']}")
+    print(f"Exemplo {i}: '{problema}'")
+    print("-" * 50)
+    print(f"Scores Brutos: {classificacao['detalhes']}")
+    print(f"Status: {classificacao['status']}")
+    print(f"Tipo Principal: Tipo {classificacao['tipo_principal']} ({classificacao['confianca']}% de confiança)")
+
+    if classificacao.get('status') == 'Ambiguo':
+        print(f"Tipo Secundário: Tipo {classificacao['tipo_secundario']}")
+
+    print()
