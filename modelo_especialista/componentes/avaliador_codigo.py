@@ -35,8 +35,10 @@ class AvaliadorCodigo:
             "confianca_classificacao": classificacao['confianca'],
             "status": "APROVADO",
             "detalhes": [],
-            "conceitos_verificados": [],
-            "conceitos_faltantes": [],
+            "conceitos_especificos_verificados": [],
+            "conceitos_especificos_faltantes": [],
+            "conceitos_gerais_verificados": [],
+            "conceitos_gerais_faltantes": [],
             "conceitos_incorretos": []
         }
 
@@ -44,32 +46,34 @@ class AvaliadorCodigo:
         codigo_normalizado = codigo_aluno.lower()
 
         # 3. Verificações específicas por tipo de problema
-        if tipo_problema == "1":  # Saída e Conceitos Iniciais
+        if tipo_problema == "1" or tipo_problema == 1:  # Saída e Conceitos Iniciais
             resultado_estatico = verificar_tipo_1(codigo_normalizado, resultado_estatico)
 
-        elif tipo_problema == "2":  # Entrada e Aritmética
+        elif tipo_problema == "2" or tipo_problema == 2:  # Entrada e Aritmética
             resultado_estatico = verificar_tipo_2(codigo_normalizado, resultado_estatico)
 
-        elif tipo_problema == "3":  # Condicionais
+        elif tipo_problema == "3" or tipo_problema == 3:  # Condicionais
             resultado_estatico = verificar_tipo_3(codigo_normalizado, resultado_estatico)
 
-        elif tipo_problema == "4":  # Repetição
+        elif tipo_problema == "4" or tipo_problema == 4:  # Repetição
             resultado_estatico = verificar_tipo_4(codigo_normalizado, resultado_estatico)
 
-        elif tipo_problema == "5":  # Vetores
+        elif tipo_problema == "5" or tipo_problema == 5:  # Vetores
             resultado_estatico = verificar_tipo_5(codigo_normalizado, resultado_estatico)
 
-        elif tipo_problema == "6":  # Matrizes
+        elif tipo_problema == "6" or tipo_problema == 6:  # Matrizes
             resultado_estatico = verificar_tipo_6(codigo_normalizado, resultado_estatico)
 
-        elif tipo_problema == "7":  # Funções
+        elif tipo_problema == "7" or tipo_problema == 7:  # Funções
             resultado_estatico = verificar_tipo_7(codigo_normalizado, resultado_estatico)
 
         # 4. Verificações gerais de estrutura
         resultado_estatico = verificar_estrutura_geral(codigo_normalizado, resultado_estatico)
 
         # 5. Determinar status final
-        if resultado_estatico["conceitos_faltantes"] or resultado_estatico["conceitos_incorretos"]:
+        if (resultado_estatico["conceitos_especificos_faltantes"] or
+            resultado_estatico["conceitos_gerais_faltantes"] or
+            resultado_estatico["conceitos_incorretos"]):
             resultado_estatico["status"] = "REPROVADO"
 
         return resultado_estatico
@@ -102,7 +106,6 @@ class AvaliadorCodigo:
                 # Limpar arquivo temporário antes de retornar
                 if os.path.exists(caminho_arquivo_c):
                     os.remove(caminho_arquivo_c)
-                    print(f"   🗑️ Arquivo removido: {caminho_arquivo_c}")
                 return {
                     "status": "ERRO_COMPILADOR",
                     "detalhes": "GCC não encontrado. Instale o MinGW ou configure o PATH."

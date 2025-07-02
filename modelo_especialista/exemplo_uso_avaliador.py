@@ -63,21 +63,33 @@ int main() {
     print(f"   Status: {classificacao['status']}")
 
     # 6. Avaliação estática
-    print("\n📊 Avaliação estática...")
+    print("\n🔎 Avaliação estática...")
     resultado_estatico = avaliador.avaliar_estatico(codigo_aluno, enunciado)
     print(f"   Status: {resultado_estatico['status']}")
-    print(f"   Conceitos verificados: {len(resultado_estatico['conceitos_verificados'])}")
-    print(f"   Conceitos faltantes: {len(resultado_estatico['conceitos_faltantes'])}")
 
-    if resultado_estatico['conceitos_verificados']:
-        print("   ✓ Conceitos encontrados:", ", ".join(resultado_estatico['conceitos_verificados']))
+    # Conceitos específicos
+    print(f"   Conceitos específicos verificados: {len(resultado_estatico['conceitos_especificos_verificados'])}")
+    print(f"   Conceitos específicos faltantes: {len(resultado_estatico['conceitos_especificos_faltantes'])}")
 
-    if resultado_estatico['conceitos_faltantes']:
-        print("   ❌ Conceitos faltantes:", ", ".join(resultado_estatico['conceitos_faltantes']))
+    # Conceitos gerais
+    print(f"   Conceitos gerais verificados: {len(resultado_estatico['conceitos_gerais_verificados'])}")
+    print(f"   Conceitos gerais faltantes: {len(resultado_estatico['conceitos_gerais_faltantes'])}")
+
+    if resultado_estatico['conceitos_especificos_verificados']:
+        print("   ✓ Conceitos específicos encontrados:", ", ".join(resultado_estatico['conceitos_especificos_verificados']))
+
+    if resultado_estatico['conceitos_especificos_faltantes']:
+        print("   ❌ Conceitos específicos faltantes:", ", ".join(resultado_estatico['conceitos_especificos_faltantes']))
+
+    if resultado_estatico['conceitos_gerais_verificados']:
+        print("   ✓ Conceitos gerais encontrados:", ", ".join(resultado_estatico['conceitos_gerais_verificados']))
+
+    if resultado_estatico['conceitos_gerais_faltantes']:
+        print("   ❌ Conceitos gerais faltantes:", ", ".join(resultado_estatico['conceitos_gerais_faltantes']))
 
     # 7. Avaliação dinâmica (se a estática passar)
     if resultado_estatico['status'] == "APROVADO":
-        print("\n⚡ Avaliação dinâmica...")
+        print("\n🔎 Avaliação dinâmica...")
         resultado_dinamico = avaliador.avaliar_dinamico(codigo_aluno, casos_de_teste)
         print(f"   Status: {resultado_dinamico['status']}")
         if resultado_dinamico['status'] == "SUCESSO":
@@ -92,31 +104,5 @@ int main() {
 
     print("\n=== FIM DO EXEMPLO ===")
 
-def exemplo_classificacao():
-    classificador = ClassificadorCodigo(BASE_DE_REGRAS)
-
-    """
-    Exemplo de uso apenas da classificação
-    """
-    print("\n=== EXEMPLO DE CLASSIFICAÇÃO ===\n")
-
-    exemplos = [
-        "escreva um programa que imprima 'ola mundo' na tela",
-        "leia dois numeros e calcule a soma deles",
-        "verifique se um numero e par ou impar",
-        "calcule o fatorial de um numero usando um laco",
-        "armazene N numeros em um vetor e ordene em ordem crescente",
-        "crie uma matriz 3x3 e calcule a diagonal principal",
-        "crie uma funcao para calcular a media de um vetor"
-    ]
-
-    for i, exemplo in enumerate(exemplos, 1):
-        classificacao = classificador.classificar_enunciado(exemplo)
-        print(f"Exemplo {i}: '{exemplo}'")
-        print(f"   Tipo: {classificacao['tipo_principal']} | Confiança: {classificacao['confianca']:.1f}% | Status: {classificacao['status']}")
-        print()
-
-
 if __name__ == "__main__":
     exemplo_avaliacao_completa()
-    exemplo_classificacao()
