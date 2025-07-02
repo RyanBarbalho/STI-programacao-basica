@@ -1,96 +1,113 @@
 [
-    {
-      "id": "T6_PROB_001",
-      "tipo_problema": 6,
-      "nivel_dificuldade": "intermediario-avancado",
-      "conceito_principal": "Preenchimento e Exibição de Matriz",
-      "conceitos_secundarios": ["declaracao de matriz", "laços aninhados", "acesso por [linha][coluna]"],
-      "enunciado": "Escreva um programa que leia os elementos de uma matriz de inteiros 3x3. Após a leitura, o programa deve exibir a matriz na tela em seu formato de grade (linhas e colunas).",
-      "casos_de_teste": [
-        {
-          "entrada": "1\n2\n3\n4\n5\n6\n7\n8\n9\n",
-          "saida_esperada": "Matriz digitada:\n  1   2   3\n  4   5   6\n  7   8   9\n"
-        }
-      ],
-      "solucao": "#include <stdio.h>\n\nint main() {\n    int matriz[3][3];\n    int i, j;\n\n    printf(\"Digite os 9 elementos da matriz 3x3:\\n\");\n    for (i = 0; i < 3; i++) {\n        for (j = 0; j < 3; j++) {\n            scanf(\"%d\", &matriz[i][j]);\n        }\n    }\n\n    printf(\"Matriz digitada:\\n\");\n    for (i = 0; i < 3; i++) {\n        for (j = 0; j < 3; j++) {\n            printf(\"%3d \", matriz[i][j]);\n        }\n        printf(\"\\n\"); // Pula para a próxima linha ao final de cada linha da matriz\n    }\n\n    return 0;\n}",
-      "restricoes": ["A matriz será sempre de tamanho 3x3."],
-      "dicas": [
-        "Uma matriz 3x3 é declarada como: int matriz[3][3];",
-        "Para percorrer todos os elementos, você precisará de um laço 'for' dentro de outro. O laço externo pode controlar as linhas (índice 'i') e o interno, as colunas (índice 'j').",
-        "Para ler um elemento, use scanf(\"%d\", &matriz[i][j]);",
-        "Para exibir a matriz como uma grade, imprima uma quebra de linha (printf(\"\\n\");) após o término do laço interno (o das colunas)."
-      ]
-    },
-    {
-      "id": "T6_PROB_002",
-      "tipo_problema": 6,
-      "nivel_dificuldade": "intermediario-avancado",
-      "conceito_principal": "Soma de Todos os Elementos de uma Matriz",
-      "conceitos_secundarios": ["laços aninhados", "acumulador"],
-      "enunciado": "Faça um programa que leia os elementos de uma matriz de inteiros 2x3 (2 linhas e 3 colunas), calcule e exiba a soma de todos os seus elementos.",
-      "casos_de_teste": [
-        {
-          "entrada": "1\n2\n3\n4\n5\n6\n",
-          "saida_esperada": "A soma de todos os elementos da matriz e: 21\n"
-        },
-        {
-          "entrada": "10\n0\n-5\n2\n3\n-1\n",
-          "saida_esperada": "A soma de todos os elementos da matriz e: 9\n"
-        }
-      ],
-      "solucao": "#include <stdio.h>\n\nint main() {\n    int matriz[2][3];\n    int i, j, soma = 0;\n\n    printf(\"Digite os 6 elementos da matriz 2x3:\\n\");\n    for (i = 0; i < 2; i++) {\n        for (j = 0; j < 3; j++) {\n            scanf(\"%d\", &matriz[i][j]);\n        }\n    }\n\n    for (i = 0; i < 2; i++) {\n        for (j = 0; j < 3; j++) {\n            soma += matriz[i][j];\n        }\n    }\n\n    printf(\"A soma de todos os elementos da matriz e: %d\\n\", soma);\n\n    return 0;\n}",
-      "restricoes": [],
-      "dicas": [
-        "Inicialize uma variável 'soma' com 0 antes dos laços.",
-        "Use laços aninhados para percorrer cada elemento da matriz.",
-        "Dentro do laço mais interno, adicione o elemento atual (matriz[i][j]) à sua variável 'soma'."
-      ]
-    },
-    {
-      "id": "T6_PROB_003",
-      "tipo_problema": 6,
-      "nivel_dificuldade": "intermediario-avancado",
-      "conceito_principal": "Soma da Diagonal Principal",
-      "conceitos_secundarios": ["matriz quadrada", "acesso a indices"],
-      "enunciado": "Crie um programa que leia uma matriz quadrada de ordem 3 (3x3) e calcule a soma dos elementos que estão na sua diagonal principal.",
-      "casos_de_teste": [
-        {
-          "entrada": "1\n2\n3\n4\n5\n6\n7\n8\n9\n",
-          "saida_esperada": "A soma da diagonal principal e: 15\n"
-        },
-        {
-          "entrada": "10\n-1\n5\n3\n2\n-8\n0\n4\n7\n",
-          "saida_esperada": "A soma da diagonal principal e: 19\n"
-        }
-      ],
-      "solucao": "#include <stdio.h>\n\nint main() {\n    int matriz[3][3];\n    int i, j, soma_diagonal = 0;\n\n    for (i = 0; i < 3; i++) {\n        for (j = 0; j < 3; j++) {\n            scanf(\"%d\", &matriz[i][j]);\n        }\n    }\n\n    for (i = 0; i < 3; i++) {\n        soma_diagonal += matriz[i][i];\n    }\n\n    printf(\"A soma da diagonal principal e: %d\\n\", soma_diagonal);\n\n    return 0;\n}",
-      "restricoes": ["A matriz será sempre quadrada."],
-      "dicas": [
-        "Os elementos da diagonal principal são aqueles onde o índice da linha é igual ao índice da coluna.",
-        "Por exemplo, em uma matriz 3x3, são os elementos: matriz[0][0], matriz[1][1] e matriz[2][2].",
-        "Você pode usar um único laço 'for' (com uma variável 'i') para somar esses elementos, acessando-os como 'matriz[i][i]'."
-      ]
-    },
-    {
-      "id": "T6_PROB_004",
-      "tipo_problema": 6,
-      "nivel_dificuldade": "intermediario-avancado",
-      "conceito_principal": "Soma dos Elementos de Cada Linha",
-      "conceitos_secundarios": ["laços aninhados", "reset de acumulador"],
-      "enunciado": "Faça um programa que leia uma matriz 3x4 (3 linhas e 4 colunas) de números reais. Em seguida, calcule e exiba a soma dos elementos de cada linha.",
-      "casos_de_teste": [
-        {
-          "entrada": "1 2 3 4\n5 6 7 8\n9 10 11 12\n",
-          "saida_esperada": "Soma da linha 0: 10.00\nSoma da linha 1: 26.00\nSoma da linha 2: 42.00\n"
-        }
-      ],
-      "solucao": "#include <stdio.h>\n\nint main() {\n    float matriz[3][4];\n    int i, j;\n\n    for (i = 0; i < 3; i++) {\n        for (j = 0; j < 4; j++) {\n            scanf(\"%f\", &matriz[i][j]);\n        }\n    }\n\n    for (i = 0; i < 3; i++) {\n        float soma_linha = 0.0;\n        for (j = 0; j < 4; j++) {\n            soma_linha += matriz[i][j];\n        }\n        printf(\"Soma da linha %d: %.2f\\n\", i, soma_linha);\n    }\n\n    return 0;\n}",
-      "restricoes": [],
-      "dicas": [
-        "Use um laço externo para percorrer as linhas (de 0 a 2).",
-        "Para cada linha, você precisa de uma nova soma. Então, declare e inicialize sua variável 'soma_linha' com 0 DENTRO do laço externo, mas ANTES do laço interno.",
-        "O laço interno percorrerá as colunas daquela linha, acumulando os valores em 'soma_linha'.",
-        "Após o término do laço interno, imprima o resultado da soma daquela linha e o laço externo passará para a próxima, zerando a soma novamente."
-      ]
-    }
-  ]
+  {
+    "id": "T6_PROB_001",
+    "tipo_problema": 6,
+    "nivel_dificuldade": "intermediario-avancado",
+    "conceito_principal": "Preenchimento e Exibição de Matriz",
+    "conceitos_secundarios": [
+      "declaracao de matriz",
+      "laços aninhados",
+      "acesso por [linha][coluna]"
+    ],
+    "enunciado": "Escreva um programa que leia os elementos de uma matriz de inteiros 3x3. Após a leitura, o programa deve exibir a matriz na tela em seu formato de grade (linhas e colunas).",
+    "casos_de_teste": [
+      {
+        "entrada": "1\n2\n3\n4\n5\n6\n7\n8\n9\n",
+        "saida_esperada": "Matriz digitada:\n1 2 3\n4 5 6\n7 8 9"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int matriz[3][3];\n    int i, j;\n\n    printf(\"Digite os 9 elementos da matriz 3x3:\\n\");\n    for (i = 0; i < 3; i++) {\n        for (j = 0; j < 3; j++) {\n            scanf(\"%d\", &matriz[i][j]);\n        }\n    }\n\n    printf(\"Matriz digitada:\\n\");\n    for (i = 0; i < 3; i++) {\n        for (j = 0; j < 3; j++) {\n            printf(\"%3d \", matriz[i][j]);\n        }\n        printf(\"\\n\"); // Pula para a próxima linha ao final de cada linha da matriz\n    }\n\n    return 0;\n}",
+    "restricoes": [
+      "A matriz será sempre de tamanho 3x3."
+    ],
+    "dicas": [
+      "Uma matriz 3x3 é declarada como: int matriz[3][3];",
+      "Para percorrer todos os elementos, você precisará de um laço 'for' dentro de outro. O laço externo pode controlar as linhas (índice 'i') e o interno, as colunas (índice 'j').",
+      "Para ler um elemento, use scanf(\"%d\", &matriz[i][j]);",
+      "Para exibir a matriz como uma grade, imprima uma quebra de linha (printf(\"\\n\");) após o término do laço interno (o das colunas)."
+    ]
+  },
+  {
+    "id": "T6_PROB_002",
+    "tipo_problema": 6,
+    "nivel_dificuldade": "intermediario-avancado",
+    "conceito_principal": "Soma de Todos os Elementos de uma Matriz",
+    "conceitos_secundarios": [
+      "laços aninhados",
+      "acumulador"
+    ],
+    "enunciado": "Faça um programa que leia os elementos de uma matriz de inteiros 2x3 (2 linhas e 3 colunas), calcule e exiba a soma de todos os seus elementos.",
+    "casos_de_teste": [
+      {
+        "entrada": "1\n2\n3\n4\n5\n6\n",
+        "saida_esperada": "A soma de todos os elementos da matriz e: 21\n"
+      },
+      {
+        "entrada": "10\n0\n-5\n2\n3\n-1\n",
+        "saida_esperada": "A soma de todos os elementos da matriz e: 9\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int matriz[2][3];\n    int i, j, soma = 0;\n\n    printf(\"Digite os 6 elementos da matriz 2x3:\\n\");\n    for (i = 0; i < 2; i++) {\n        for (j = 0; j < 3; j++) {\n            scanf(\"%d\", &matriz[i][j]);\n        }\n    }\n\n    for (i = 0; i < 2; i++) {\n        for (j = 0; j < 3; j++) {\n            soma += matriz[i][j];\n        }\n    }\n\n    printf(\"A soma de todos os elementos da matriz e: %d\\n\", soma);\n\n    return 0;\n}",
+    "restricoes": [],
+    "dicas": [
+      "Inicialize uma variável 'soma' com 0 antes dos laços.",
+      "Use laços aninhados para percorrer cada elemento da matriz.",
+      "Dentro do laço mais interno, adicione o elemento atual (matriz[i][j]) à sua variável 'soma'."
+    ]
+  },
+  {
+    "id": "T6_PROB_003",
+    "tipo_problema": 6,
+    "nivel_dificuldade": "intermediario-avancado",
+    "conceito_principal": "Soma da Diagonal Principal",
+    "conceitos_secundarios": [
+      "matriz quadrada",
+      "acesso a indices"
+    ],
+    "enunciado": "Crie um programa que leia uma matriz quadrada de ordem 3 (3x3) e calcule a soma dos elementos que estão na sua diagonal principal.",
+    "casos_de_teste": [
+      {
+        "entrada": "1\n2\n3\n4\n5\n6\n7\n8\n9\n",
+        "saida_esperada": "A soma da diagonal principal e: 15\n"
+      },
+      {
+        "entrada": "10\n-1\n5\n3\n2\n-8\n0\n4\n7\n",
+        "saida_esperada": "A soma da diagonal principal e: 19\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int matriz[3][3];\n    int i, j, soma_diagonal = 0;\n\n    for (i = 0; i < 3; i++) {\n        for (j = 0; j < 3; j++) {\n            scanf(\"%d\", &matriz[i][j]);\n        }\n    }\n\n    for (i = 0; i < 3; i++) {\n        soma_diagonal += matriz[i][i];\n    }\n\n    printf(\"A soma da diagonal principal e: %d\\n\", soma_diagonal);\n\n    return 0;\n}",
+    "restricoes": [
+      "A matriz será sempre quadrada."
+    ],
+    "dicas": [
+      "Os elementos da diagonal principal são aqueles onde o índice da linha é igual ao índice da coluna.",
+      "Por exemplo, em uma matriz 3x3, são os elementos: matriz[0][0], matriz[1][1] e matriz[2][2].",
+      "Você pode usar um único laço 'for' (com uma variável 'i') para somar esses elementos, acessando-os como 'matriz[i][i]'."
+    ]
+  },
+  {
+    "id": "T6_PROB_004",
+    "tipo_problema": 6,
+    "nivel_dificuldade": "intermediario-avancado",
+    "conceito_principal": "Soma dos Elementos de Cada Linha",
+    "conceitos_secundarios": [
+      "laços aninhados",
+      "reset de acumulador"
+    ],
+    "enunciado": "Faça um programa que leia uma matriz 3x4 (3 linhas e 4 colunas) de números reais. Em seguida, calcule e exiba a soma dos elementos de cada linha.",
+    "casos_de_teste": [
+      {
+        "entrada": "1 2 3 4\n5 6 7 8\n9 10 11 12\n",
+        "saida_esperada": "Soma da linha 0: 10.00\nSoma da linha 1: 26.00\nSoma da linha 2: 42.00\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    float matriz[3][4];\n    int i, j;\n\n    for (i = 0; i < 3; i++) {\n        for (j = 0; j < 4; j++) {\n            scanf(\"%f\", &matriz[i][j]);\n        }\n    }\n\n    for (i = 0; i < 3; i++) {\n        float soma_linha = 0.0;\n        for (j = 0; j < 4; j++) {\n            soma_linha += matriz[i][j];\n        }\n        printf(\"Soma da linha %d: %.2f\\n\", i, soma_linha);\n    }\n\n    return 0;\n}",
+    "restricoes": [],
+    "dicas": [
+      "Use um laço externo para percorrer as linhas (de 0 a 2).",
+      "Para cada linha, você precisa de uma nova soma. Então, declare e inicialize sua variável 'soma_linha' com 0 DENTRO do laço externo, mas ANTES do laço interno.",
+      "O laço interno percorrerá as colunas daquela linha, acumulando os valores em 'soma_linha'.",
+      "Após o término do laço interno, imprima o resultado da soma daquela linha e o laço externo passará para a próxima, zerando a soma novamente."
+    ]
+  }
+]

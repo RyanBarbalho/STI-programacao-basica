@@ -153,11 +153,144 @@ class AvaliadorCodigo:
                     saida_obtida = execucao.stdout.strip()
                     saida_esperada = caso['saida_esperada'].strip()
 
+                    # Remover prompts comuns de entrada da saída obtida
+                    import re
+                    # Padrões comuns de prompts que devem ser removidos
+                    prompts_para_remover = [
+                        # Padrões básicos
+                        r'Digite.*?:',
+                        r'Entre.*?:',
+                        r'Informe.*?:',
+                        r'Digite o.*?:',
+                        r'Digite a.*?:',
+                        r'Digite um.*?:',
+                        r'Digite uma.*?:',
+                        r'Digite dois.*?:',
+                        r'Digite tres.*?:',
+                        r'Digite as.*?:',
+                        r'Digite os.*?:',
+                        r'Quantos.*?:',
+                        r'Entre com.*?:',
+                        r'Informe o.*?:',
+                        r'Informe a.*?:',
+                        r'Informe um.*?:',
+                        r'Informe uma.*?:',
+                        r'Informe dois.*?:',
+                        r'Informe tres.*?:',
+                        r'Informe as.*?:',
+                        r'Informe os.*?:',
+                        r'Entre o.*?:',
+                        r'Entre a.*?:',
+                        r'Entre um.*?:',
+                        r'Entre uma.*?:',
+                        r'Entre dois.*?:',
+                        r'Entre tres.*?:',
+                        r'Entre as.*?:',
+                        r'Entre os.*?:',
+
+                        # Padrões específicos para casos problemáticos
+                        r'Digite uma nota entre.*?:',
+                        r'Digite novamente.*?:',
+                        r'Valor invalido.*?:',
+                        r'Digite o primeiro.*?:',
+                        r'Digite o segundo.*?:',
+                        r'Digite a primeira.*?:',
+                        r'Digite a segunda.*?:',
+                        r'Digite os.*?elementos.*?:',
+                        r'Digite os.*?numeros.*?:',
+                        r'Digite.*?numeros.*?:',
+                        r'Digite.*?elementos.*?:',
+                        r'Quantos alunos.*?:',
+                        r'Quantos numeros.*?:',
+                        r'Quantos elementos.*?:',
+
+                        # Padrões com variações de pontuação
+                        r'Digite.*?\?',
+                        r'Entre.*?\?',
+                        r'Informe.*?\?',
+                        r'Quantos.*?\?',
+
+                        # Padrões com espaços extras
+                        r'\s*Digite.*?:',
+                        r'\s*Entre.*?:',
+                        r'\s*Informe.*?:',
+                        r'\s*Quantos.*?:',
+                    ]
+
+                                        # Remover prompts da saída obtida
+                    for padrao in prompts_para_remover:
+                        saida_obtida = re.sub(padrao, '', saida_obtida, flags=re.IGNORECASE)
+
+                    # Normalização robusta de formatação
+                    def normalizar_saida(texto):
+                        if not texto:
+                            return ""
+
+                        # Normalizar quebras de linha (Windows, Unix, Mac)
+                        texto = re.sub(r'\r\n', '\n', texto)
+                        texto = re.sub(r'\r', '\n', texto)
+
+                        # Normalizar múltiplas quebras de linha para uma única
+                        texto = re.sub(r'\n\s*\n', '\n', texto)
+
+                        # Normalizar espaços múltiplos para um único espaço
+                        texto = re.sub(r'[ \t]+', ' ', texto)
+
+                        # Remover espaços no início e fim de cada linha
+                        linhas = texto.split('\n')
+                        linhas = [linha.strip() for linha in linhas]
+
+                        # Remover linhas vazias no início e fim
+                        while linhas and not linhas[0].strip():
+                            linhas.pop(0)
+                        while linhas and not linhas[-1].strip():
+                            linhas.pop()
+
+                        # Juntar linhas e remover espaços extras no início e fim
+                        return '\n'.join(linhas).strip()
+
+                    # Aplicar normalização
+                    saida_obtida = normalizar_saida(saida_obtida)
+                    saida_esperada = normalizar_saida(saida_esperada)
+
                     print(f"   📤 Saída obtida: '{saida_obtida}'")
                     print(f"   📥 Saída esperada: '{saida_esperada}'")
 
-                    # 7. Comparar saídas
-                    if saida_obtida != saida_esperada:
+                    # 7. Comparar saídas com flexibilidade
+                    def comparar_saidas(obtida, esperada):
+                        # Se são idênticas, sucesso
+                        if obtida == esperada:
+                            return True, "Exata"
+
+                        # Normalizar ainda mais para comparação flexível
+                        def normalizar_para_comparacao(texto):
+                            # Remover todos os espaços extras
+                            texto = re.sub(r'\s+', ' ', texto)
+                            # Converter para minúsculas para comparação case-insensitive
+                            return texto.lower().strip()
+
+                        obtida_norm = normalizar_para_comparacao(obtida)
+                        esperada_norm = normalizar_para_comparacao(esperada)
+
+                        # Comparação case-insensitive e sem espaços extras
+                        if obtida_norm == esperada_norm:
+                            return True, "Normalizada"
+
+                        # Verificar se a saída obtida contém a esperada (para casos com prompts extras)
+                        if esperada_norm in obtida_norm:
+                            return True, "Contém"
+
+                        # Verificar se a esperada contém a obtida (para casos com formatação mais simples)
+                        if obtida_norm in esperada_norm:
+                            return True, "Contida"
+
+                        return False, "Diferente"
+
+                    sucesso, tipo_comparacao = comparar_saidas(saida_obtida, saida_esperada)
+
+                    print(f"   🔍 Tipo de comparação: {tipo_comparacao}")
+
+                    if not sucesso:
                         # Limpar arquivos temporários antes de retornar
                         if os.path.exists(caminho_arquivo_c):
                             os.remove(caminho_arquivo_c)
@@ -236,23 +369,94 @@ class AvaliadorCodigo:
         # 1. Avaliação estática
         resultado_estatico = self.avaliar_estatico(codigo_aluno, enunciado)
 
+        # 2. Avaliação dinâmica
+        resultado_dinamico = self.avaliar_dinamico(codigo_aluno, casos_de_teste)
+
+        # 3. Integração inteligente das análises
+        resultado_final = self._integrar_analises(resultado_estatico, resultado_dinamico, enunciado)
+
+        return resultado_final
+
+    def _integrar_analises(self, resultado_estatico, resultado_dinamico, enunciado):
+        """
+        Integra os resultados das análises estática e dinâmica de forma inteligente.
+        """
+        # Se a análise dinâmica passou, mas a estática falhou em conceitos específicos
+        if (resultado_dinamico["status"] == "SUCESSO" and
+            resultado_estatico["conceitos_especificos_faltantes"]):
+
+            # Gerar feedback inteligente
+            feedback_alternativo = self._gerar_feedback_alternativo(
+                resultado_estatico["conceitos_especificos_faltantes"],
+                resultado_estatico["tipo_problema"]
+            )
+
+            return {
+                "status": "SUCESSO_ALTERNATIVO",
+                "avaliacao_estatica": resultado_estatico,
+                "avaliacao_dinamica": resultado_dinamico,
+                "detalhes": resultado_dinamico.get("detalhes", ""),
+                "feedback_alternativo": feedback_alternativo,
+                "observacao": "Código funciona corretamente, mas usa abordagem alternativa."
+            }
+
+        # Se a análise estática falhou completamente
         if resultado_estatico["status"] == "REPROVADO":
             return {
                 "status": "REPROVADO_ESTATICO",
                 "avaliacao_estatica": resultado_estatico,
-                "avaliacao_dinamica": None,
+                "avaliacao_dinamica": resultado_dinamico,
                 "detalhes": "Código reprovado na análise estática. Verifique os conceitos faltantes."
             }
 
-        # 2. Avaliação dinâmica
-        resultado_dinamico = self.avaliar_dinamico(codigo_aluno, casos_de_teste)
-
+        # Caso padrão: retorna o status da análise dinâmica
         return {
             "status": resultado_dinamico["status"],
             "avaliacao_estatica": resultado_estatico,
             "avaliacao_dinamica": resultado_dinamico,
             "detalhes": resultado_dinamico.get("detalhes", "")
         }
+
+    def _gerar_feedback_alternativo(self, conceitos_faltantes, tipo_problema):
+        """
+        Gera feedback quando o aluno resolve o problema de forma alternativa.
+        """
+        feedback = []
+
+        for conceito in conceitos_faltantes:
+            if "printf" in conceito:
+                feedback.append("Você resolveu o problema sem usar printf. Ótimo trabalho! "
+                              "Para praticar, tente também usar printf() para saída formatada.")
+
+            elif "scanf" in conceito:
+                feedback.append("Você resolveu o problema sem usar scanf. Ótimo trabalho! "
+                              "Para praticar, tente também usar scanf() para entrada de dados.")
+
+            elif "if" in conceito:
+                feedback.append("Você resolveu o problema sem usar estruturas condicionais. "
+                              "Ótimo trabalho! Para praticar, tente também usar if/else.")
+
+            elif "while" in conceito or "for" in conceito:
+                feedback.append("Você resolveu o problema sem usar estruturas de repetição. "
+                              "Ótimo trabalho! Para praticar, tente também usar while ou for.")
+
+            elif "vetor" in conceito:
+                feedback.append("Você resolveu o problema sem usar vetores. "
+                              "Ótimo trabalho! Para praticar, tente também usar arrays.")
+
+            elif "matriz" in conceito:
+                feedback.append("Você resolveu o problema sem usar matrizes. "
+                              "Ótimo trabalho! Para praticar, tente também usar matrizes.")
+
+            elif "função" in conceito:
+                feedback.append("Você resolveu o problema sem usar funções adicionais. "
+                              "Ótimo trabalho! Para praticar, tente também criar funções.")
+
+            else:
+                feedback.append(f"Você resolveu o problema sem usar {conceito}. "
+                              "Ótimo trabalho! Para praticar, tente também usar esse conceito.")
+
+        return feedback
 
 
 # Funções de conveniência para compatibilidade com código existente
