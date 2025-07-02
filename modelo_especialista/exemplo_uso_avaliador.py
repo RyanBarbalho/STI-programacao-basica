@@ -62,45 +62,37 @@ int main() {
     print(f"   Confiança: {classificacao['confianca']:.1f}%")
     print(f"   Status: {classificacao['status']}")
 
-    # 6. Avaliação estática
-    print("\n🔎 Avaliação estática...")
-    resultado_estatico = avaliador.avaliar_estatico(codigo_aluno, enunciado)
-    print(f"   Status: {resultado_estatico['status']}")
-
-    # Conceitos específicos
-    print(f"   Conceitos específicos verificados: {len(resultado_estatico['conceitos_especificos_verificados'])}")
-    print(f"   Conceitos específicos faltantes: {len(resultado_estatico['conceitos_especificos_faltantes'])}")
-
-    # Conceitos gerais
-    print(f"   Conceitos gerais verificados: {len(resultado_estatico['conceitos_gerais_verificados'])}")
-    print(f"   Conceitos gerais faltantes: {len(resultado_estatico['conceitos_gerais_faltantes'])}")
-
-    if resultado_estatico['conceitos_especificos_verificados']:
-        print("   ✓ Conceitos específicos encontrados:", ", ".join(resultado_estatico['conceitos_especificos_verificados']))
-
-    if resultado_estatico['conceitos_especificos_faltantes']:
-        print("   ❌ Conceitos específicos faltantes:", ", ".join(resultado_estatico['conceitos_especificos_faltantes']))
-
-    if resultado_estatico['conceitos_gerais_verificados']:
-        print("   ✓ Conceitos gerais encontrados:", ", ".join(resultado_estatico['conceitos_gerais_verificados']))
-
-    if resultado_estatico['conceitos_gerais_faltantes']:
-        print("   ❌ Conceitos gerais faltantes:", ", ".join(resultado_estatico['conceitos_gerais_faltantes']))
-
-    # 7. Avaliação dinâmica (se a estática passar)
-    if resultado_estatico['status'] == "APROVADO":
-        print("\n🔎 Avaliação dinâmica...")
-        resultado_dinamico = avaliador.avaliar_dinamico(codigo_aluno, casos_de_teste)
-        print(f"   Status: {resultado_dinamico['status']}")
-        if resultado_dinamico['status'] == "SUCESSO":
-            print("   ✓ Todos os casos de teste passaram!")
-        else:
-            print(f"   ❌ {resultado_dinamico['detalhes']}")
-
-    # 8. Avaliação completa
-    print("\n🎯 Avaliação completa...")
+        # 6. Avaliação completa
+    print("\n🎯 AVALIAÇÃO COMPLETA")
     resultado_completo = avaliador.avaliar_completo(codigo_aluno, enunciado, casos_de_teste)
-    print(f"   Status final: {resultado_completo['status']}")
+
+    # Status principal
+    print(f"   Status: {resultado_completo['status']}")
+
+    # Detalhes da análise estática
+    estatica = resultado_completo['avaliacao_estatica']
+    print(f"   📊 Conceitos específicos: {len(estatica['conceitos_especificos_verificados'])}/{len(estatica['conceitos_especificos_verificados']) + len(estatica['conceitos_especificos_faltantes'])}")
+    print(f"   📊 Conceitos gerais: {len(estatica['conceitos_gerais_verificados'])}/{len(estatica['conceitos_gerais_verificados']) + len(estatica['conceitos_gerais_faltantes'])}")
+
+    # Detalhes da análise dinâmica
+    dinamica = resultado_completo['avaliacao_dinamica']
+    if dinamica:
+        print(f"   🚀 Execução: {dinamica['status']}")
+
+    # Mostrar conceitos específicos encontrados
+    if estatica['conceitos_especificos_verificados']:
+        print(f"   ✅ Conceitos específicos: {', '.join(estatica['conceitos_especificos_verificados'])}")
+
+    # Mostrar conceitos específicos faltantes
+    if estatica['conceitos_especificos_faltantes']:
+        print(f"   ❌ Conceitos específicos faltantes: {', '.join(estatica['conceitos_especificos_faltantes'])}")
+
+    # Mostrar feedback alternativo se aplicável
+    if resultado_completo['status'] == "SUCESSO_ALTERNATIVO":
+        print(f"   💡 Observação: {resultado_completo['observacao']}")
+        if 'feedback_alternativo' in resultado_completo:
+            for feedback in resultado_completo['feedback_alternativo']:
+                print(f"   💡 {feedback}")
 
     print("\n=== FIM DO EXEMPLO ===")
 
