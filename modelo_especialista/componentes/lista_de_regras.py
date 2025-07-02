@@ -1,4 +1,4 @@
-MODELO_ESPECIALISTA = {
+BASE_DE_REGRAS = {
     1: { # Saída e Conceitos Iniciais
         "pesos": {
             5: [
