@@ -1,105 +1,124 @@
 [
-    {
-      "id": "T5_PROB_001",
-      "tipo_problema": 5,
-      "nivel_dificuldade": "intermediario",
-      "conceito_principal": "Preenchimento e Exibição de Vetor",
-      "conceitos_secundarios": ["declaracao de vetor", "acesso por indice", "laço for"],
-      "enunciado": "Escreva um programa que leia 5 números inteiros para um vetor. Após a leitura, o programa deve exibir os 5 números que foram armazenados.",
-      "casos_de_teste": [
-        {
-          "entrada": "10\n20\n30\n40\n50\n",
-          "saida_esperada": "Valores lidos: 10 20 30 40 50 \n"
-        },
-        {
-          "entrada": "9\n-3\n0\n15\n-7\n",
-          "saida_esperada": "Valores lidos: 9 -3 0 15 -7 \n"
-        }
-      ],
-      "solucao": "#include <stdio.h>\n\nint main() {\n    int vetor[5];\n    int i;\n\n    printf(\"Digite 5 numeros inteiros:\\n\");\n    for (i = 0; i < 5; i++) {\n        scanf(\"%d\", &vetor[i]);\n    }\n\n    printf(\"Valores lidos: \");\n    for (i = 0; i < 5; i++) {\n        printf(\"%d \", vetor[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}",
-      "restricoes": ["O programa deve usar um vetor para armazenar os números."],
-      "dicas": [
-        "Para declarar um vetor de 5 inteiros, use: int vetor[5];",
-        "Os índices de um vetor de tamanho 5 vão de 0 a 4.",
-        "Use um laço 'for' de 0 a 4 para ler os valores. Dentro do laço, o 'scanf' deve ler para 'vetor[i]'.",
-        "Use um segundo laço 'for' para imprimir os valores, acessando 'vetor[i]' a cada iteração."
-      ]
-    },
-    {
-      "id": "T5_PROB_002",
-      "tipo_problema": 5,
-      "nivel_dificuldade": "intermediario",
-      "conceito_principal": "Exibição de Vetor na Ordem Inversa",
-      "conceitos_secundarios": ["acesso por indice", "laço for decrescente"],
-      "enunciado": "Faça um programa que leia 5 números inteiros para um vetor e, em seguida, os exiba na ordem inversa da que foram lidos.",
-      "casos_de_teste": [
-        {
-          "entrada": "1\n8\n3\n9\n4\n",
-          "saida_esperada": "Ordem inversa: 4 9 3 8 1 \n"
-        },
-        {
-          "entrada": "10\n20\n30\n40\n50\n",
-          "saida_esperada": "Ordem inversa: 50 40 30 20 10 \n"
-        }
-      ],
-      "solucao": "#include <stdio.h>\n\nint main() {\n    int vetor[5];\n    int i;\n\n    printf(\"Digite 5 numeros inteiros:\\n\");\n    for (i = 0; i < 5; i++) {\n        scanf(\"%d\", &vetor[i]);\n    }\n\n    printf(\"Ordem inversa: \");\n    for (i = 4; i >= 0; i--) {\n        printf(\"%d \", vetor[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}",
-      "restricoes": [],
-      "dicas": [
-        "O primeiro passo é ler e armazenar os 5 números em um vetor, da mesma forma que no exercício anterior.",
-        "Para imprimir na ordem inversa, o laço 'for' precisa começar do último índice e ir até o primeiro.",
-        "Se o vetor tem 5 posições, os índices são 0, 1, 2, 3, 4. O laço deve começar em 4 e ir até 0, decrementando a cada passo (i--)."
-      ]
-    },
-    {
-      "id": "T5_PROB_003",
-      "tipo_problema": 5,
-      "nivel_dificuldade": "intermediario",
-      "conceito_principal": "Busca pelo Maior Elemento em um Vetor",
-      "conceitos_secundarios": ["iteracao em vetor", "logica condicional"],
-      "enunciado": "Crie um programa que leia 10 números reais para um vetor e, ao final, encontre e exiba o maior elemento entre eles e sua respectiva posição (índice) no vetor.",
-      "casos_de_teste": [
-        {
-          "entrada": "10.5\n50.2\n20.1\n5.8\n30.0\n99.9\n-5.0\n0.0\n45.1\n12.3\n",
-          "saida_esperada": "O maior elemento e 99.90 e esta na posicao 5.\n"
-        },
-        {
-          "entrada": "-10\n-5\n-30\n-2\n-50\n-100\n-8\n-1\n-40\n-15\n",
-          "saida_esperada": "O maior elemento e -1.00 e esta na posicao 7.\n"
-        }
-      ],
-      "solucao": "#include <stdio.h>\n\nint main() {\n    float vetor[10];\n    int i, posicaomaior = 0;\n    float maior;\n\n    for(i = 0; i < 10; i++) {\n        scanf(\"%f\", &vetor[i]);\n    }\n\n    maior = vetor[0];\n\n    for(i = 1; i < 10; i++) {\n        if (vetor[i] > maior) {\n            maior = vetor[i];\n            posicaomaior = i;\n        }\n    }\n\n    printf(\"O maior elemento e %.2f e esta na posicao %d.\\n\", maior, posicaomaior);\n\n    return 0;\n}",
-      "restricoes": ["Se houver números iguais e maiores, considere a posição do primeiro que aparecer."],
-      "dicas": [
-        "Crie uma variável 'maior' e inicialize-a com o primeiro valor do vetor (vetor[0]). Crie também uma 'posicaomaior' e inicialize-a com 0.",
-        "Percorra o vetor com um laço 'for', começando do SEGUNDO elemento (índice 1).",
-        "Dentro do laço, compare o elemento atual (vetor[i]) com o valor armazenado em 'maior'.",
-        "Se 'vetor[i]' for maior que 'maior', atualize o valor de 'maior' para 'vetor[i]' e o de 'posicaomaior' para 'i'."
-      ]
-    },
-    {
-      "id": "T5_PROB_004",
-      "tipo_problema": 5,
-      "nivel_dificuldade": "intermediario",
-      "conceito_principal": "Soma e Média dos Elementos de um Vetor",
-      "conceitos_secundarios": ["iteracao em vetor", "acumulador"],
-      "enunciado": "Faça um programa que leia N notas de uma turma (N deve ser lido no início, máx 20). Armazene as notas em um vetor. Ao final, calcule e imprima a soma de todas as notas e a média da turma.",
-      "casos_de_teste": [
-        {
-          "entrada": "4\n10.0\n8.0\n6.0\n9.0\n",
-          "saida_esperada": "Soma das notas: 33.00\nMedia da turma: 8.25\n"
-        },
-        {
-          "entrada": "3\n5.5\n7.2\n8.1\n",
-          "saida_esperada": "Soma das notas: 20.80\nMedia da turma: 6.93\n"
-        }
-      ],
-      "solucao": "#include <stdio.h>\n\nint main() {\n    float notas[20], soma = 0.0, media;\n    int n, i;\n\n    printf(\"Quantos alunos na turma (max 20)? \");\n    scanf(\"%d\", &n);\n\n    printf(\"Digite as %d notas:\\n\", n);\n    for(i = 0; i < n; i++) {\n        scanf(\"%f\", &notas[i]);\n    }\n\n    for(i = 0; i < n; i++) {\n        soma += notas[i];\n    }\n\n    media = soma / n;\n\n    printf(\"Soma das notas: %.2f\\n\", soma);\n    printf(\"Media da turma: %.2f\\n\", media);\n\n    return 0;\n}",
-      "restricoes": ["O número de alunos N não será maior que 20."],
-      "dicas": [
-        "Declare um vetor com o tamanho máximo possível (20, neste caso).",
-        "Use uma variável 'soma' inicializada com 0 para acumular os valores.",
-        "Percorra o vetor usando um laço 'for' (de 0 até N-1). A cada passo, some o elemento 'notas[i]' à variável 'soma'.",
-        "A média será a 'soma' total dividida por 'N'. Cuidado com a divisão de inteiros se suas variáveis não forem 'float'."
-      ]
-    }
-  ]
+  {
+    "id": "T5_PROB_001",
+    "tipo_problema": 5,
+    "nivel_dificuldade": "intermediario",
+    "conceito_principal": "Preenchimento e Exibição de Vetor",
+    "conceitos_secundarios": [
+      "declaracao de vetor",
+      "acesso por indice",
+      "laço for"
+    ],
+    "enunciado": "Escreva um programa que leia 5 números inteiros para um vetor. Após a leitura, o programa deve exibir os 5 números que foram armazenados.",
+    "casos_de_teste": [
+      {
+        "entrada": "10\n20\n30\n40\n50\n",
+        "saida_esperada": "Valores lidos: 10 20 30 40 50 \n"
+      },
+      {
+        "entrada": "9\n-3\n0\n15\n-7\n",
+        "saida_esperada": "Valores lidos: 9 -3 0 15 -7 \n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int vetor[5];\n    int i;\n\n    printf(\"Digite 5 numeros inteiros:\\n\");\n    for (i = 0; i < 5; i++) {\n        scanf(\"%d\", &vetor[i]);\n    }\n\n    printf(\"Valores lidos: \");\n    for (i = 0; i < 5; i++) {\n        printf(\"%d \", vetor[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}",
+    "restricoes": [
+      "O programa deve usar um vetor para armazenar os números."
+    ],
+    "dicas": [
+      "Para declarar um vetor de 5 inteiros, use: int vetor[5];",
+      "Os índices de um vetor de tamanho 5 vão de 0 a 4.",
+      "Use um laço 'for' de 0 a 4 para ler os valores. Dentro do laço, o 'scanf' deve ler para 'vetor[i]'.",
+      "Use um segundo laço 'for' para imprimir os valores, acessando 'vetor[i]' a cada iteração."
+    ]
+  },
+  {
+    "id": "T5_PROB_002",
+    "tipo_problema": 5,
+    "nivel_dificuldade": "intermediario",
+    "conceito_principal": "Exibição de Vetor na Ordem Inversa",
+    "conceitos_secundarios": [
+      "acesso por indice",
+      "laço for decrescente"
+    ],
+    "enunciado": "Faça um programa que leia 5 números inteiros para um vetor e, em seguida, os exiba na ordem inversa da que foram lidos.",
+    "casos_de_teste": [
+      {
+        "entrada": "1\n8\n3\n9\n4\n",
+        "saida_esperada": "Ordem inversa: 4 9 3 8 1 \n"
+      },
+      {
+        "entrada": "10\n20\n30\n40\n50\n",
+        "saida_esperada": "Ordem inversa: 50 40 30 20 10 \n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    int vetor[5];\n    int i;\n\n    printf(\"Digite 5 numeros inteiros:\\n\");\n    for (i = 0; i < 5; i++) {\n        scanf(\"%d\", &vetor[i]);\n    }\n\n    printf(\"Ordem inversa: \");\n    for (i = 4; i >= 0; i--) {\n        printf(\"%d \", vetor[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}",
+    "restricoes": [],
+    "dicas": [
+      "O primeiro passo é ler e armazenar os 5 números em um vetor, da mesma forma que no exercício anterior.",
+      "Para imprimir na ordem inversa, o laço 'for' precisa começar do último índice e ir até o primeiro.",
+      "Se o vetor tem 5 posições, os índices são 0, 1, 2, 3, 4. O laço deve começar em 4 e ir até 0, decrementando a cada passo (i--)."
+    ]
+  },
+  {
+    "id": "T5_PROB_003",
+    "tipo_problema": 5,
+    "nivel_dificuldade": "intermediario",
+    "conceito_principal": "Busca pelo Maior Elemento em um Vetor",
+    "conceitos_secundarios": [
+      "iteracao em vetor",
+      "logica condicional"
+    ],
+    "enunciado": "Crie um programa que leia 10 números reais para um vetor e, ao final, encontre e exiba o maior elemento entre eles e sua respectiva posição (índice) no vetor.",
+    "casos_de_teste": [
+      {
+        "entrada": "10.5\n50.2\n20.1\n5.8\n30.0\n99.9\n-5.0\n0.0\n45.1\n12.3\n",
+        "saida_esperada": "O maior elemento e 99.90 e esta na posicao 5.\n"
+      },
+      {
+        "entrada": "-10\n-5\n-30\n-2\n-50\n-100\n-8\n-1\n-40\n-15\n",
+        "saida_esperada": "O maior elemento e -1.00 e esta na posicao 7.\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    float vetor[10];\n    int i, posicaomaior = 0;\n    float maior;\n\n    for(i = 0; i < 10; i++) {\n        scanf(\"%f\", &vetor[i]);\n    }\n\n    maior = vetor[0];\n\n    for(i = 1; i < 10; i++) {\n        if (vetor[i] > maior) {\n            maior = vetor[i];\n            posicaomaior = i;\n        }\n    }\n\n    printf(\"O maior elemento e %.2f e esta na posicao %d.\\n\", maior, posicaomaior);\n\n    return 0;\n}",
+    "restricoes": [
+      "Se houver números iguais e maiores, considere a posição do primeiro que aparecer."
+    ],
+    "dicas": [
+      "Crie uma variável 'maior' e inicialize-a com o primeiro valor do vetor (vetor[0]). Crie também uma 'posicaomaior' e inicialize-a com 0.",
+      "Percorra o vetor com um laço 'for', começando do SEGUNDO elemento (índice 1).",
+      "Dentro do laço, compare o elemento atual (vetor[i]) com o valor armazenado em 'maior'.",
+      "Se 'vetor[i]' for maior que 'maior', atualize o valor de 'maior' para 'vetor[i]' e o de 'posicaomaior' para 'i'."
+    ]
+  },
+  {
+    "id": "T5_PROB_004",
+    "tipo_problema": 5,
+    "nivel_dificuldade": "intermediario",
+    "conceito_principal": "Soma e Média dos Elementos de um Vetor",
+    "conceitos_secundarios": [
+      "iteracao em vetor",
+      "acumulador"
+    ],
+    "enunciado": "Faça um programa que leia N notas de uma turma (N deve ser lido no início, máx 20). Armazene as notas em um vetor. Ao final, calcule e imprima a soma de todas as notas e a média da turma.",
+    "casos_de_teste": [
+      {
+        "entrada": "4\n10.0\n8.0\n6.0\n9.0\n",
+        "saida_esperada": "Soma das notas: 33.00\nMedia da turma: 8.25"
+      },
+      {
+        "entrada": "3\n5.5\n7.2\n8.1\n",
+        "saida_esperada": "Soma das notas: 20.80\nMedia da turma: 6.93\n"
+      }
+    ],
+    "solucao": "#include <stdio.h>\n\nint main() {\n    float notas[20], soma = 0.0, media;\n    int n, i;\n\n    printf(\"Quantos alunos na turma (max 20)? \");\n    scanf(\"%d\", &n);\n\n    printf(\"Digite as %d notas:\\n\", n);\n    for(i = 0; i < n; i++) {\n        scanf(\"%f\", &notas[i]);\n    }\n\n    for(i = 0; i < n; i++) {\n        soma += notas[i];\n    }\n\n    media = soma / n;\n\n    printf(\"Soma das notas: %.2f\\n\", soma);\n    printf(\"Media da turma: %.2f\\n\", media);\n\n    return 0;\n}",
+    "restricoes": [
+      "O número de alunos N não será maior que 20."
+    ],
+    "dicas": [
+      "Declare um vetor com o tamanho máximo possível (20, neste caso).",
+      "Use uma variável 'soma' inicializada com 0 para acumular os valores.",
+      "Percorra o vetor usando um laço 'for' (de 0 até N-1). A cada passo, some o elemento 'notas[i]' à variável 'soma'.",
+      "A média será a 'soma' total dividida por 'N'. Cuidado com a divisão de inteiros se suas variáveis não forem 'float'."
+    ]
+  }
+]

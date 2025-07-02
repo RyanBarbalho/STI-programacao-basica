@@ -9,7 +9,8 @@ BASE_DE_REGRAS = {
                 "escreva na tela", "quebra de linha", "print", "printf", "cout",
                 "escreva uma mensagem", "imprima uma frase", "mostre um texto",
                 "exiba na tela", "saida de dados", "output", "mensagem na tela",
-                "nova linha", "endl", "\n", "pular linha", "quebrar linha"
+                "nova linha", "endl", "\n", "pular linha", "quebrar linha",
+                "imprima exatamente", "frase exata", "mensagem exata"
             ],
             1: [
                 "imprima", "mostre", "exiba", "frase", "texto", "nome", "mensagem",
@@ -172,7 +173,7 @@ BASE_DE_REGRAS = {
             ],
             3: [
                 "tabela", "linhas e colunas", "diagonal principal", "diagonal secundaria",
-                "linhas", "colunas", "linha", "coluna", "posicao da matriz",
+                "linhas", "colunas", "posicao da matriz",
                 "elemento da matriz", "valor da matriz", "dimensao da matriz",
                 "tamanho da matriz", "ordem da matriz", "matriz quadrada",
                 "matriz retangular", "matriz triangular", "matriz identidade",
@@ -181,7 +182,7 @@ BASE_DE_REGRAS = {
                 "determinante", "inversa", "adjunta", "cofator"
             ],
             1: [
-                "linhas", "colunas", "linha", "coluna", "posicao", "indice",
+                "linhas", "colunas", "posicao", "indice",
                 "elemento", "valor", "dado", "informacao", "item", "entrada",
                 "registro", "campo", "atributo", "propriedade", "caracteristica",
                 "qualidade", "aspecto", "fator", "componente", "parte",
@@ -201,7 +202,8 @@ BASE_DE_REGRAS = {
                 "defina uma funcao", "defina um procedimento", "implemente uma funcao",
                 "implemente um procedimento", "desenvolva uma funcao",
                 "desenvolva um procedimento", "escreva uma funcao",
-                "escreva um procedimento", "criar funcao", "criar procedimento"
+                "escreva um procedimento", "criar funcao", "criar procedimento",
+                "exiba um menu", "exibicao do menu", "funcao separada", "funcao chamada"
             ],
             3: [
                 "retorne", "retornar", "modularize", "passagem de parametro",
@@ -211,7 +213,8 @@ BASE_DE_REGRAS = {
                 "corpo da funcao", "escopo da funcao", "visibilidade da funcao",
                 "chamada da funcao", "invocacao da funcao", "execucao da funcao",
                 "reutilizacao", "reutilizar", "modularizacao", "modularizar",
-                "organizacao do codigo", "estruturacao do codigo"
+                "organizacao do codigo", "estruturacao do codigo",
+                "menu de opcoes", "opcoes", "separada", "chamada", "exibir"
             ],
             1: [
                 "parametro", "chamar", "reutilizar", "argumento", "valor",

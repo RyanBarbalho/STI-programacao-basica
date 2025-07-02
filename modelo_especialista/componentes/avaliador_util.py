@@ -10,8 +10,8 @@ import re
 def verificar_tipo_1(codigo, resultado):
     """Verifica conceitos de Saída e Conceitos Iniciais"""
 
-    # Verificar uso de printf
-    if "printf(" in codigo:
+    # Verificar uso de printf com regex
+    if re.search(r'\bprintf\s*\([^)]*\)', codigo):
         resultado["conceitos_especificos_verificados"].append("Uso da função printf")
     else:
         resultado["conceitos_especificos_faltantes"].append("Uso da função printf")
@@ -21,22 +21,27 @@ def verificar_tipo_1(codigo, resultado):
 def verificar_tipo_2(codigo, resultado):
     """Verifica conceitos de Entrada e Aritmética"""
 
-    # Verificar uso de scanf ou entrada de dados
-    if "scanf(" in codigo:
+    # Verificar uso de scanf com regex
+    if re.search(r'\bscanf\s*\([^)]*\)', codigo):
         resultado["conceitos_especificos_verificados"].append("Uso da função scanf para entrada")
     else:
         resultado["conceitos_especificos_faltantes"].append("Uso da função scanf para entrada")
 
-    # Verificar operadores aritméticos
+    # Verificar operadores aritméticos com regex
     operadores = ["+", "-", "*", "/", "%"]
-    operadores_encontrados = [op for op in operadores if op in codigo]
+    operadores_encontrados = []
+    for op in operadores:
+        # Evitar capturar operadores em strings ou comentários
+        if re.search(rf'(?<!["\']){re.escape(op)}(?!["\'])', codigo):
+            operadores_encontrados.append(op)
+
     if operadores_encontrados:
         resultado["conceitos_especificos_verificados"].append(f"Uso de operadores aritméticos: {', '.join(operadores_encontrados)}")
     else:
         resultado["conceitos_especificos_faltantes"].append("Uso de operadores aritméticos")
 
-    # Verificar declaração de variáveis
-    if "int " in codigo or "float " in codigo or "double " in codigo:
+    # Verificar declaração de variáveis com regex
+    if re.search(r'\b(int|float|double|char)\s+\w+', codigo):
         resultado["conceitos_especificos_verificados"].append("Declaração de variáveis")
     else:
         resultado["conceitos_especificos_faltantes"].append("Declaração de variáveis")
@@ -46,19 +51,23 @@ def verificar_tipo_2(codigo, resultado):
 def verificar_tipo_3(codigo, resultado):
     """Verifica conceitos de Condicionais"""
 
-    # Verificar uso de if
-    if "if (" in codigo or "if(" in codigo:
+    # Verificar uso de if com regex mais inteligente
+    if re.search(r'\bif\s*\([^)]*\)', codigo):
         resultado["conceitos_especificos_verificados"].append("Uso da estrutura if")
     else:
         resultado["conceitos_especificos_faltantes"].append("Uso da estrutura if")
 
-    # Verificar uso de else
-    if "else" in codigo:
+    # Verificar uso de else com regex
+    if re.search(r'\belse\b', codigo):
         resultado["conceitos_especificos_verificados"].append("Uso da estrutura else")
 
-    # Verificar operadores de comparação
+    # Verificar operadores de comparação com regex
     operadores_comp = ["==", "!=", "<", ">", "<=", ">="]
-    operadores_encontrados = [op for op in operadores_comp if op in codigo]
+    operadores_encontrados = []
+    for op in operadores_comp:
+        if re.search(rf'(?<!["\']){re.escape(op)}(?!["\'])', codigo):
+            operadores_encontrados.append(op)
+
     if operadores_encontrados:
         resultado["conceitos_especificos_verificados"].append(f"Uso de operadores de comparação: {', '.join(operadores_encontrados)}")
     else:
@@ -69,15 +78,14 @@ def verificar_tipo_3(codigo, resultado):
 def verificar_tipo_4(codigo, resultado):
     """Verifica conceitos de Repetição"""
 
-    # Verificar estruturas de repetição
-    estruturas_rep = ["while (", "for (", "do {"]
+    # Verificar estruturas de repetição com regex
     estruturas_encontradas = []
 
-    if "while (" in codigo or "while(" in codigo:
+    if re.search(r'\bwhile\s*\([^)]*\)', codigo):
         estruturas_encontradas.append("while")
-    if "for (" in codigo or "for(" in codigo:
+    if re.search(r'\bfor\s*\([^)]*\)', codigo):
         estruturas_encontradas.append("for")
-    if "do {" in codigo:
+    if re.search(r'\bdo\s*\{', codigo):
         estruturas_encontradas.append("do-while")
 
     if estruturas_encontradas:
@@ -85,8 +93,8 @@ def verificar_tipo_4(codigo, resultado):
     else:
         resultado["conceitos_especificos_faltantes"].append("Uso de estrutura de repetição")
 
-    # Verificar variáveis de controle
-    if "++" in codigo or "--" in codigo or "+=" in codigo or "-=" in codigo:
+    # Verificar variáveis de controle com regex
+    if re.search(r'\b(\+\+|--|\+=|-=)\b', codigo):
         resultado["conceitos_especificos_verificados"].append("Uso de operadores de incremento/decremento")
 
     return resultado
@@ -124,19 +132,24 @@ def verificar_tipo_6(codigo, resultado):
 def verificar_tipo_7(codigo, resultado):
     """Verifica conceitos de Funções"""
 
-    # Verificar definição de função adicional
-    funcoes = re.findall(r'(int|void|float|double|char)\s+\w+\s*\(', codigo)
-    if len(funcoes) > 1:  # Mais de uma função (incluindo main)
+    # Verificar definição de função adicional (excluindo main)
+    funcoes = re.findall(r'(int|void|float|double|char)\s+(\w+)\s*\(', codigo)
+    funcoes_adicionais = [f[1] for f in funcoes if f[1].lower() != 'main']
+
+    if funcoes_adicionais:
         resultado["conceitos_especificos_verificados"].append("Definição de função adicional")
     else:
         resultado["conceitos_especificos_faltantes"].append("Definição de função adicional")
 
-    # Verificar chamada de função
-    if re.search(r'\w+\s*\([^)]*\)', codigo):
+    # Verificar chamada de função (excluindo printf, scanf, main)
+    chamadas = re.findall(r'\b(\w+)\s*\([^)]*\)', codigo)
+    chamadas_validas = [c for c in chamadas if c.lower() not in ['printf', 'scanf', 'main']]
+
+    if chamadas_validas:
         resultado["conceitos_especificos_verificados"].append("Chamada de função")
 
-    # Verificar return em função
-    if "return " in codigo:
+    # Verificar return em função (excluindo return 0)
+    if re.search(r'\breturn\s+(?!0\b)', codigo):
         resultado["conceitos_especificos_verificados"].append("Uso de return")
 
     return resultado
@@ -144,20 +157,20 @@ def verificar_tipo_7(codigo, resultado):
 def verificar_estrutura_geral(codigo, resultado):
     """Verificações gerais de estrutura do código"""
 
-    # Verificar inclusão da biblioteca stdio.h
-    if "#include <stdio.h>" in codigo or "#include<stdio.h>" in codigo:
+    # Verificar inclusão da biblioteca stdio.h com regex
+    if re.search(r'#include\s*[<"]stdio\.h[>"]', codigo):
         resultado["conceitos_gerais_verificados"].append("Inclusão da biblioteca stdio.h")
     else:
         resultado["conceitos_gerais_faltantes"].append("Inclusão da biblioteca stdio.h")
 
-    # Verificar função main
-    if "int main()" in codigo or "void main()" in codigo:
+    # Verificar função main com regex
+    if re.search(r'\b(int|void)\s+main\s*\([^)]*\)', codigo):
         resultado["conceitos_gerais_verificados"].append("Função main definida")
     else:
         resultado["conceitos_gerais_faltantes"].append("Função main definida")
 
-    # Verificar return 0
-    if "return 0" in codigo:
+    # Verificar return 0 com regex
+    if re.search(r'\breturn\s+0\b', codigo):
         resultado["conceitos_gerais_verificados"].append("Return 0 na função main")
 
     # Verificar chaves de abertura e fechamento
@@ -169,9 +182,11 @@ def verificar_estrutura_geral(codigo, resultado):
     else:
         resultado["conceitos_incorretos"].append("Estrutura de chaves desbalanceada")
 
-    # Verificar ponto e vírgula
-    if ";" in codigo:
+    # Verificar ponto e vírgula (mais inteligente)
+    if re.search(r'[^;]\s*;', codigo):
         resultado["conceitos_gerais_verificados"].append("Uso de ponto e vírgula")
+    else:
+        resultado["conceitos_gerais_faltantes"].append("Uso de ponto e vírgula")
 
     # Verificar parênteses balanceados
     parenteses_abertura = codigo.count("(")
