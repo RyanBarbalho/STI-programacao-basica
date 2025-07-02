@@ -98,6 +98,8 @@ python rodar_todos_os_casos.py
 
 ## 📚 Tipos de Problemas Suportados
 
+**(É recomendado escrever o código em algum editor de texto de ide ou semelhante e colar no editor da interface)**
+
 1. **Tipo 1 - Saída e Conceitos Iniciais**
    - printf, stdio.h, função main
    - Exemplo: "Escreva um programa que imprima 'Olá, Mundo!'"
