@@ -25,6 +25,7 @@ setup_imports()
 
 # Agora pode importar normalmente
 from modelo_especialista import AvaliadorCodigo, ClassificadorCodigo, BASE_DE_REGRAS
+from modelo_especialista.componentes.dicas_inteligentes import DicasInteligentes
 
 # Configuração da página
 st.set_page_config(
@@ -149,6 +150,21 @@ def exibir_problema(problema):
             for conceito in problema['conceitos_secundarios']:
                 st.write(f"• {conceito}")
 
+    # --- Chat de perguntas para a IA ---
+    st.markdown('---')
+    st.markdown('### 💬 Pergunte algo para a IA:')
+    pergunta = st.text_input('Digite sua pergunta para a IA', key='chat_ia')
+    if st.button('Perguntar', key='btn_perguntar_ia') and pergunta.strip():
+        dicas = DicasInteligentes()
+        # Usa o código do aluno, tipo de problema e enunciado como contexto
+        resposta = dicas.gerar_dica_geral(
+            st.session_state.get('codigo_aluno', ''),
+            st.session_state.get('tipo_problema', 'Desconhecido'),
+            problema['enunciado'],
+            pergunta  # Passa a pergunta específica
+        )
+        st.success(f'🤖 Resposta da IA: {resposta}')
+
 def exibir_resultado_avaliacao(resultado):
     """Exibe o resultado da avaliação de forma clara e organizada"""
 
@@ -158,6 +174,12 @@ def exibir_resultado_avaliacao(resultado):
     if status == "SUCESSO":
         st.markdown('<div class="success-message">', unsafe_allow_html=True)
         st.success("🎉 **SUCESSO!** Seu código está correto!")
+
+        # Mostrar quantos casos de teste passaram
+        if 'avaliacao_dinamica' in resultado:
+            dinamica = resultado['avaliacao_dinamica']
+            st.info("✅ Todos os casos de teste passaram com sucesso!")
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     elif status == "SUCESSO_ALTERNATIVO":
@@ -174,28 +196,101 @@ def exibir_resultado_avaliacao(resultado):
     elif status == "REPROVADO_ESTATICO":
         st.markdown('<div class="error-message">', unsafe_allow_html=True)
         st.error("❌ **REPROVADO** - Verifique os conceitos faltantes.")
+
+        # Mostrar dica inteligente se disponível
+        if 'dica_inteligente' in resultado:
+            st.markdown("### 🤖 Dica Inteligente:")
+            st.info(resultado['dica_inteligente'])
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     elif status == "ERRO_COMPILACAO":
         st.markdown('<div class="error-message">', unsafe_allow_html=True)
         st.error("🔨 **ERRO DE COMPILAÇÃO**")
-        st.code(resultado.get('detalhes', 'Erro desconhecido'))
+        st.markdown("### 💻 Detalhes do Erro:")
+        st.code(resultado.get('detalhes', 'Erro desconhecido'), language='bash')
+
+        # Mostrar dica inteligente se disponível
+        if 'dica_inteligente' in resultado:
+            st.markdown("### 🤖 Dica Inteligente:")
+            st.info(resultado['dica_inteligente'])
+        else:
+            st.markdown("### 💡 Dicas para Resolução:")
+            st.info("• Verifique se todas as chaves `{}` estão balanceadas\n• Certifique-se de que todos os comandos terminam com `;`\n• Verifique se as aspas estão corretas (use `\"` para strings)")
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     elif status == "RESPOSTA_ERRADA":
         st.markdown('<div class="error-message">', unsafe_allow_html=True)
         st.error(f"❌ **RESPOSTA INCORRETA** - {resultado.get('detalhes', '')}")
 
-        # Mostrar detalhes do erro
-        col1, col2 = st.columns(2)
+        # Mostrar detalhes do caso que falhou
+        st.markdown("### 📋 Caso de Teste que Falhou:")
+
+        col1, col2, col3 = st.columns(3)
         with col1:
-            st.write("**Entrada:**")
-            st.code(resultado.get('entrada', ''))
+            st.write("**📝 Entrada:**")
+            entrada = resultado.get('entrada', '')
+            if entrada and entrada.strip():
+                st.code(entrada.strip())
+            else:
+                st.code("(sem entrada)")
+
         with col2:
-            st.write("**Saída esperada:**")
-            st.code(resultado.get('saida_esperada', ''))
-            st.write("**Sua saída:**")
-            st.code(resultado.get('saida_obtida', ''))
+            st.write("**✅ Saída Esperada:**")
+            saida_esperada = resultado.get('saida_esperada', '')
+            if saida_esperada:
+                st.code(saida_esperada)
+            else:
+                st.code("(sem saída esperada)")
+
+        with col3:
+            st.write("**📤 Sua Saída:**")
+            saida_obtida = resultado.get('saida_obtida', '')
+            if saida_obtida:
+                st.code(saida_obtida)
+            else:
+                st.code("(saída vazia)")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    elif status == "RESPOSTA_ERRADA":
+        st.markdown('<div class="error-message">', unsafe_allow_html=True)
+        st.error(f"❌ **RESPOSTA INCORRETA** - {resultado.get('detalhes', '')}")
+
+        # Mostrar detalhes do caso que falhou
+        st.markdown("### 📋 Caso de Teste que Falhou:")
+
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.write("**📝 Entrada:**")
+            entrada = resultado.get('entrada', '')
+            if entrada and entrada.strip():
+                st.code(entrada.strip())
+            else:
+                st.code("(sem entrada)")
+
+        with col2:
+            st.write("**✅ Saída Esperada:**")
+            saida_esperada = resultado.get('saida_esperada', '')
+            if saida_esperada:
+                st.code(saida_esperada)
+            else:
+                st.code("(sem saída esperada)")
+
+        with col3:
+            st.write("**📤 Sua Saída:**")
+            saida_obtida = resultado.get('saida_obtida', '')
+            if saida_obtida:
+                st.code(saida_obtida)
+            else:
+                st.code("(saída vazia)")
+
+        # Mostrar dica inteligente se disponível
+        if 'dica_inteligente' in resultado:
+            st.markdown("### 🤖 Dica Inteligente:")
+            st.info(resultado['dica_inteligente'])
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     elif status == "TEMPO_LIMITE_EXCEDIDO":
@@ -243,7 +338,9 @@ def exibir_resultado_avaliacao(resultado):
     if 'avaliacao_dinamica' in resultado:
         dinamica = resultado['avaliacao_dinamica']
 
-        with st.expander("🚀 Análise Dinâmica", expanded=False):
+        with st.expander("🚀 Análise Dinâmica", expanded=True):
+            st.markdown("### 📊 Resultado da Execução:")
+
             if dinamica['status'] == "SUCESSO":
                 st.success("✅ Todos os casos de teste passaram!")
             else:
@@ -313,6 +410,10 @@ def main():
             help="Digite seu código C completo, incluindo #include e int main()"
         )
 
+        # Salvar código na session state para usar no chat
+        st.session_state['codigo_aluno'] = codigo_aluno
+        st.session_state['tipo_problema'] = tipo_selecionado
+
         # Botão de avaliação
         if st.button("🚀 Avaliar Código", type="primary"):
             if codigo_aluno.strip():
@@ -322,7 +423,7 @@ def main():
                         enunciado = problema_selecionado['enunciado']
                         casos_de_teste = problema_selecionado['casos_de_teste']
 
-                        # Realizar avaliação completa
+                                                # Realizar avaliação completa
                         resultado = avaliador.avaliar_completo(
                             codigo_aluno,
                             enunciado,
@@ -331,6 +432,39 @@ def main():
 
                         # Exibir resultado
                         st.subheader("📊 Resultado da Avaliação")
+
+                        # Mostrar status de forma destacada
+                        status_resultado = resultado.get('status', 'UNKNOWN')
+                        if status_resultado == "SUCESSO":
+                            st.balloons()
+                        elif status_resultado == "SUCESSO_ALTERNATIVO":
+                            st.snow()
+
+                        # Mostrar casos de teste do problema
+                        with st.expander("📋 Casos de Teste do Problema", expanded=True):
+                            st.markdown("### Caso de Teste Esperado:")
+
+                            # Mostrar apenas o primeiro caso
+                            caso = casos_de_teste[0]
+                            st.markdown("**Caso 1:**")
+
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                st.write("📝 **Entrada:**")
+                                entrada = caso.get('entrada', '')
+                                if entrada and entrada.strip():
+                                    st.code(entrada.strip())
+                                else:
+                                    st.code("(sem entrada)")
+
+                            with col2:
+                                st.write("✅ **Saída Esperada:**")
+                                saida_esperada = caso.get('saida_esperada', '')
+                                if saida_esperada:
+                                    st.code(saida_esperada)
+                                else:
+                                    st.code("(sem saída esperada)")
+
                         exibir_resultado_avaliacao(resultado)
 
                     except Exception as e:

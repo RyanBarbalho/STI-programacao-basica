@@ -156,23 +156,6 @@ def verificar_tipo_7(codigo, resultado):
 
 def verificar_estrutura_geral(codigo, resultado):
     """Verificações gerais de estrutura do código"""
-
-    # Verificar inclusão da biblioteca stdio.h com regex
-    if re.search(r'#include\s*[<"]stdio\.h[>"]', codigo):
-        resultado["conceitos_gerais_verificados"].append("Inclusão da biblioteca stdio.h")
-    else:
-        resultado["conceitos_gerais_faltantes"].append("Inclusão da biblioteca stdio.h")
-
-    # Verificar função main com regex
-    if re.search(r'\b(int|void)\s+main\s*\([^)]*\)', codigo):
-        resultado["conceitos_gerais_verificados"].append("Função main definida")
-    else:
-        resultado["conceitos_gerais_faltantes"].append("Função main definida")
-
-    # Verificar return 0 com regex
-    if re.search(r'\breturn\s+0\b', codigo):
-        resultado["conceitos_gerais_verificados"].append("Return 0 na função main")
-
     # Verificar chaves de abertura e fechamento
     chaves_abertura = codigo.count("{")
     chaves_fechamento = codigo.count("}")

@@ -9,6 +9,7 @@ from .avaliador_util import (verificar_estrutura_geral, verificar_tipo_1,
                              verificar_tipo_6, verificar_tipo_7)
 from .classificador_de_enunciados import classificar_enunciado
 from .lista_de_regras import BASE_DE_REGRAS
+from .dicas_inteligentes import DicasInteligentes
 
 
 class AvaliadorCodigo:
@@ -19,6 +20,7 @@ class AvaliadorCodigo:
 
     def __init__(self):
         self.BASE_DE_REGRAS = BASE_DE_REGRAS
+        self.dicas_inteligentes = DicasInteligentes()
 
     def avaliar_estatico(self, codigo_aluno, enunciado):
         """
@@ -127,15 +129,22 @@ class AvaliadorCodigo:
                 if os.path.exists(caminho_executavel):
                     os.remove(caminho_executavel)
                     print(f"   🗑️ Executável removido: {caminho_executavel}")
+                # Gerar dica inteligente para erro de compilação
+                dica = self.dicas_inteligentes.gerar_dica_erro_compilacao(
+                    codigo_aluno, compilacao.stderr, "Compilação"
+                )
+
                 return {
                     "status": "ERRO_COMPILACAO",
                     "detalhes": compilacao.stderr,
-                    "arquivo_compilado": caminho_arquivo_c
+                    "arquivo_compilado": caminho_arquivo_c,
+                    "dica_inteligente": dica
                 }
 
             print("   ✅ Compilação bem-sucedida!")
 
             # 5. Executar os casos de teste
+            print(f"   🧪 Iniciando execução de {len(casos_de_teste)} caso(s) de teste...")
             for i, caso in enumerate(casos_de_teste):
                 print(f"   🚀 Executando caso de teste {i+1}...")
 
@@ -150,8 +159,8 @@ class AvaliadorCodigo:
                     )
 
                     # 6. Capturar e normalizar saídas
-                    saida_obtida = execucao.stdout.strip()
-                    saida_esperada = caso['saida_esperada'].strip()
+                    saida_obtida = execucao.stdout.strip() if execucao.stdout else ""
+                    saida_esperada = caso.get('saida_esperada', '').strip() if caso.get('saida_esperada') else ""
 
                     # Remover prompts comuns de entrada da saída obtida
                     import re
@@ -253,8 +262,18 @@ class AvaliadorCodigo:
                     saida_obtida = normalizar_saida(saida_obtida)
                     saida_esperada = normalizar_saida(saida_esperada)
 
+                    # Display melhorado da entrada, saída esperada e saída obtida
+                    print("   " + "="*60)
+                    print(f"   📋 CASO DE TESTE {i+1}")
+                    print("   " + "="*60)
+                    entrada_caso = caso.get('entrada', '') or ""
+                    if entrada_caso.strip():
+                        print(f"   📝 Entrada: '{entrada_caso.strip()}'")
+                    else:
+                        print(f"   📝 Entrada: (sem entrada)")
+                    print(f"   ✅ Saída esperada: '{saida_esperada}'")
                     print(f"   📤 Saída obtida: '{saida_obtida}'")
-                    print(f"   📥 Saída esperada: '{saida_esperada}'")
+                    print("   " + "-"*60)
 
                     # 7. Comparar saídas com flexibilidade
                     def comparar_saidas(obtida, esperada):
@@ -277,18 +296,22 @@ class AvaliadorCodigo:
                             return True, "Normalizada"
 
                         # Verificar se a saída obtida contém a esperada (para casos com prompts extras)
-                        if esperada_norm in obtida_norm:
+                        if obtida_norm and esperada_norm and esperada_norm in obtida_norm:
                             return True, "Contém"
 
                         # Verificar se a esperada contém a obtida (para casos com formatação mais simples)
-                        if obtida_norm in esperada_norm:
+                        if obtida_norm and esperada_norm and obtida_norm in esperada_norm:
                             return True, "Contida"
 
                         return False, "Diferente"
 
                     sucesso, tipo_comparacao = comparar_saidas(saida_obtida, saida_esperada)
 
-                    print(f"   🔍 Tipo de comparação: {tipo_comparacao}")
+                    if sucesso:
+                        print(f"   ✅ RESULTADO: PASSOU (Comparação {tipo_comparacao})")
+                    else:
+                        print(f"   ❌ RESULTADO: FALHOU (Comparação {tipo_comparacao})")
+                    print("   " + "="*60)
 
                     if not sucesso:
                         # Limpar arquivos temporários antes de retornar
@@ -298,13 +321,21 @@ class AvaliadorCodigo:
                         if os.path.exists(caminho_executavel):
                             os.remove(caminho_executavel)
                             print(f"   🗑️ Executável removido: {caminho_executavel}")
+                        # Gerar dica inteligente para resposta incorreta
+                        dica = self.dicas_inteligentes.gerar_dica_resposta_errada(
+                            codigo_aluno, caso.get('entrada', '') or '',
+                            saida_esperada or '', saida_obtida or '',
+                            "Execução"
+                        )
+
                         return {
                             "status": "RESPOSTA_ERRADA",
                             "detalhes": f"Falhou no caso de teste {i+1}",
-                            "entrada": caso['entrada'],
-                            "saida_esperada": saida_esperada,
-                            "saida_obtida": saida_obtida,
-                            "arquivo_compilado": caminho_arquivo_c
+                            "entrada": caso.get('entrada', '') or '',
+                            "saida_esperada": saida_esperada or '',
+                            "saida_obtida": saida_obtida or '',
+                            "arquivo_compilado": caminho_arquivo_c,
+                            "dica_inteligente": dica
                         }
 
                 except subprocess.TimeoutExpired:
@@ -335,6 +366,9 @@ class AvaliadorCodigo:
                     }
 
             # 8. Sucesso - todos os casos passaram
+            print("   " + "="*60)
+            print(f"   🎉 TODOS OS {len(casos_de_teste)} CASOS DE TESTE PASSARAM!")
+            print("   " + "="*60)
             return {"status": "SUCESSO", "detalhes": "Todos os casos de teste passaram!"}
 
         except Exception as e:
@@ -373,11 +407,11 @@ class AvaliadorCodigo:
         resultado_dinamico = self.avaliar_dinamico(codigo_aluno, casos_de_teste)
 
         # 3. Integração inteligente das análises
-        resultado_final = self._integrar_analises(resultado_estatico, resultado_dinamico, enunciado)
+        resultado_final = self._integrar_analises(resultado_estatico, resultado_dinamico, enunciado, codigo_aluno)
 
         return resultado_final
 
-    def _integrar_analises(self, resultado_estatico, resultado_dinamico, enunciado):
+    def _integrar_analises(self, resultado_estatico, resultado_dinamico, enunciado, codigo_aluno):
         """
         Integra os resultados das análises estática e dinâmica de forma inteligente.
         """
@@ -402,20 +436,39 @@ class AvaliadorCodigo:
 
         # Se a análise estática falhou completamente
         if resultado_estatico["status"] == "REPROVADO":
+            # Gerar dica inteligente para conceitos faltantes
+            conceitos_faltantes = (resultado_estatico.get("conceitos_especificos_faltantes", []) +
+                                 resultado_estatico.get("conceitos_gerais_faltantes", []))
+
+            dica = self.dicas_inteligentes.gerar_dica_conceitos_faltantes(
+                codigo_aluno, conceitos_faltantes,
+                resultado_estatico.get("tipo_problema", "Desconhecido"),
+                enunciado
+            )
+
             return {
                 "status": "REPROVADO_ESTATICO",
                 "avaliacao_estatica": resultado_estatico,
                 "avaliacao_dinamica": resultado_dinamico,
-                "detalhes": "Código reprovado na análise estática. Verifique os conceitos faltantes."
+                "detalhes": "Código reprovado na análise estática. Verifique os conceitos faltantes.",
+                "dica_inteligente": dica
             }
 
         # Caso padrão: retorna o status da análise dinâmica
-        return {
+        resultado_final = {
             "status": resultado_dinamico["status"],
             "avaliacao_estatica": resultado_estatico,
             "avaliacao_dinamica": resultado_dinamico,
             "detalhes": resultado_dinamico.get("detalhes", "")
         }
+
+        # Preservar dados específicos do erro dinâmico (entrada, saída esperada, saída obtida)
+        if resultado_dinamico["status"] == "RESPOSTA_ERRADA":
+            resultado_final["entrada"] = resultado_dinamico.get("entrada", "") or ""
+            resultado_final["saida_esperada"] = resultado_dinamico.get("saida_esperada", "") or ""
+            resultado_final["saida_obtida"] = resultado_dinamico.get("saida_obtida", "") or ""
+
+        return resultado_final
 
     def _gerar_feedback_alternativo(self, conceitos_faltantes, tipo_problema):
         """
